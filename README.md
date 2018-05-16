@@ -1,38 +1,23 @@
-[![Build Status](https://travis-ci.org/insites/cookieconsent.svg)](https://travis-ci.org/insites/cookieconsent)
-## What is Cookie Consent? 
+[![Build Status](https://travis-ci.org/KrisGray/gdprconsent.svg)](https://travis-ci.org/KrisGray/gdprconsent)
+## What is GDPR Consent? 
 
-[Cookie Consent](https://cookieconsent.insites.com/) is a lightweight JavaScript plugin for alerting users about the use of cookies on your website.
+[GDPR]() is a lightweight JavaScript plugin based on [Cookie Consent](https://cookieconsent.insites.com/) for alerting users about the privacy policy and the use of cookies within the website.
 
-It is designed to help you comply with the hideous EU Cookie Law and not make you want to kill yourself in the process. So we made it fast, free, and relatively painless.
+It is designed to help you comply with the EU Cookie Law and the GDPR.
 
-## Version 3.0
+## Version 1.0
 
-Version 3.0 is a complete rewrite from version 2. The most substantial new features are:
+Version 1.0 is based on the Cookie consent version 3.0. Noticable differences are as follows:
 
-- the ability to GeoLocate and only show the addon to people in the relevant countries
-- callback hooks for showing/accepting/revoking the banner
-- support for different types of compliance, giving you the flexibility to obey even the strictest cookie laws
-- easy no-fuss themes and customisable styles
+- CSS development now done via SASS (scss).
+- Due to GDPR rules Opt-out is not an option and so opt-out and the dismiss status are removed.
+- GDPR will add two cookies rather than the one that Cookie Consent would set. This is because for anonymous browsing under GDPR we have to record the version of the Ts &amp; Cs. If the terms and conditions version changes then we will have to delete the cookies and ask for acceptance once again. The second cookies is used to store the accept privacy policy version to compare with the current version.
 
-## Installation
-
-The easiest way to get up and running is to use our [wizard](https://cookieconsent.insites.com/download/). 
-
-You can also install this project through [npm](https://www.npmjs.com/):
-
-```sh
-npm install cookieconsent
-```
-
-Or through [Bower](https://bower.io/):
-
-```sh
-bower install cookieconsent
-```
+**Please note that if you are to use the locations service within GDPR Consent, that you add the service as a data processor within your privacy notice.**
 
 ## Documentation 
 
-See our [full documentation](https://cookieconsent.insites.com/documentation/).
+See our [full documentation]().
 
 ## Contributing
 
@@ -55,6 +40,10 @@ gulp build
 Code released under the [MIT licence](http://opensource.org/licenses/MIT).
 
 ## Credits
+
+GDPR Consent v1
+
++ Kris Gray - JavasScript
 
 Cookie Consent v3
 

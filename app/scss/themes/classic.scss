@@ -1,0 +1,28 @@
+/* Classic */
+
+.gc-floating.gc-theme-classic {
+  padding: 1.2em;
+  border-radius: 5px;
+}
+
+.gc-floating.gc-type-info.gc-theme-classic {
+  .gc-compliance {
+    text-align: center;
+    display: inline;
+    flex: none;
+  }
+
+  .gc-btn {
+    display: inline-block;
+  }
+} 
+
+.gc-theme-classic {
+  .gc-btn {
+    border-radius: 5px;
+  }
+
+  .gc-btn:last-child {
+    min-width: 140px;
+  }
+}

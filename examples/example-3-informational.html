@@ -8,7 +8,7 @@
   <title>Demo 3 - Informational</title>
 
   <link href="examples/style.css" rel="stylesheet">
-  <link href="build/cookieconsent.min.css" rel="stylesheet">
+  <link href="build/gdprconsent.min.css" rel="stylesheet">
 
 <body class="example3" role="document">
 
@@ -19,27 +19,26 @@
         <h1><span>Demo 3</span> Informational</h1>
 
         <p>
-          An <a href="http://cookieconsent.insites.com/documentation/compliance/#informational">informational</a> notice simply tells
-          users that we use cookies, and lets the user dismiss the message. This is the simplest solution, and
-          recommended for most websites.
+          An <a href="">informational</a> notice simply tells
+          users that we use cookies and informing them of the privacy Ts &amp; Cs, and lets the user dismiss the message. This is the simplest solution.
         </p>
 
         <ul class="example-selector"></ul>
 
         <a href="examples/example-2-custom-theme.html" class="page-switcher page-switcher-prev" title="Previous demo">&#9664;</a>
-        <a href="examples/example-4-opt-out.html" class="page-switcher page-switcher-next" title="Next demo">&#9654;</a>
+        <a href="examples/example-4-opt-in.html" class="page-switcher page-switcher-next" title="Next demo">&#9654;</a>
 
       </div>
     </div>
   </div>
 
 <script src="examples/script.js"></script>
-<script src="build/cookieconsent.min.js"></script>
+<script src="build/gdprconsent.min.js"></script>
 <script>
 
   (function (C, U) {
     pageState = U.initialisePopupSelector({
-      cookieconsent: C,
+      gdprconsent: C,
       selector: document.querySelector('.example-selector'),
       popups: {
         'Try it': {
@@ -48,6 +47,6 @@
         },
       },
     });
-  } (window.cookieconsent, window.cookieconsent_example_util));
+  } (window.gdprconsent, window.gdprconsent_example_util));
 
 </script>

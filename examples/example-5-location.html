@@ -8,7 +8,7 @@
   <title>Demo 6 - Location</title>
 
   <link href="examples/style.css" rel="stylesheet">
-  <link href="build/cookieconsent.min.css" rel="stylesheet">
+  <link href="build/gdprconsent.min.css" rel="stylesheet">
 
   <style>
     #message {height: 5em}
@@ -20,9 +20,9 @@
   <div class="center-outer fit">
     <div class="center-inner">
       <div class="example-window" role="main">
-        <h1><span>Demo 6</span> Location</h1>
+        <h1><span>Demo 5</span> Location</h1>
         <p>
-          If you want, <a href="http://cookieconsent.insites.com/">Cookie Consent</a> can automatically adapt to the
+          If you want, <a href="">GDPR Consent</a> can automatically adapt to the
           user's location. Choose a country and see how the law and banner changes:
         </p>
 
@@ -33,15 +33,15 @@
 
         <div id="message"></div>
 
-        <a href="examples/example-5-opt-in.html" class="page-switcher page-switcher-prev" title="Previous demo">&#9664;</a>
-        <a href="examples/example-7-javascript-api.html" class="page-switcher page-switcher-next" title="Next demo">&#9654;</a>
+        <a href="examples/example-4-opt-in.html" class="page-switcher page-switcher-prev" title="Previous demo">&#9664;</a>
+        <a href="examples/example-6-javascript-api.html" class="page-switcher page-switcher-next" title="Next demo">&#9654;</a>
 
       </div>
     </div>
   </div>
 
 <script src="examples/script.js"></script>
-<script src="src/cookieconsent.js"></script>
+<script src="build/gdprconsent.min.js"></script>
 <script>
 
   var COUNTRY_CODES = {
@@ -279,7 +279,7 @@
         popupInst = null;
       }
 
-      cookieconsent.initialise(options, function (popup) {
+      gdprconsent.initialise(options, function (popup) {
         popupInst = popup;
         popupInst.autoOpen();
       }, function (err) {
@@ -307,7 +307,7 @@
 
     function getCountryDetails(code) {
       // We only get these to show (on screen) how the country behaves
-      var law = new cookieconsent.Law({});
+      var law = new gdprconsent.Law({});
       var countryOpts = law.get(code);
 
       if (!countryOpts.hasLaw) {
@@ -321,6 +321,6 @@
       });
     }
 
-  }(window.cookieconsent, window.cookieconsent_example_util));
+  }(window.gdprconsent, window.gdprconsent_example_util));
 
 </script>

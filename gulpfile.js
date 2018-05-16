@@ -9,32 +9,39 @@ var autoprefixer = require('gulp-autoprefixer');
 var bump = require('gulp-bump');
 var yargs = require('yargs');
 var diff = require('gulp-diff');
-
+var sass = require('gulp-sass');
+var rename = require("gulp-rename");
 
 var buildFolder = './build';
+var cssFolder = './src/css';
 var jsBuildFiles = [
-  './src/cookieconsent.js'
+  './src/gdprconsent.js'
 ];
 var cssBuildFiles = [
   // defined explicitly so they are combined in order
-  './src/styles/animation.css',
-  './src/styles/base.css',
-  './src/styles/layout.css',
-  './src/styles/media.css',
-
-  // all theme files
-  './src/styles/themes/*.css',
+  './src/css/gdprconsent.css'
 ];
 
 
 gulp.task('cleanup:begin', function () {
-  return deleteDirs([buildFolder]);
+  return deleteDirs([buildFolder, cssFolder]);
+});
+
+gulp.task('sass', function(){
+  return gulp.src('./src/styles/base.scss')
+    .pipe(sass()) // Using gulp-sass
+    .pipe(rename({
+      basename: "gdprconsent",
+      extname: ".css"
+    }))
+    .pipe(gulp.dest('src/css'))
+    
 });
 
 gulp.task('minify:js', function () {
   return gulp.src(jsBuildFiles)            // get files
     .pipe(minifyJS())                      // minify them
-    .pipe(concat('cookieconsent.min.js'))  // combine them
+    .pipe(concat('gdprconsent.min.js'))  // combine them
     .pipe(gulp.dest(buildFolder));          // save under a new name
 });
 
@@ -42,7 +49,7 @@ gulp.task('minify:css', function () {
   return gulp.src(cssBuildFiles)            // get files
     .pipe(autoprefixer({browsers: ['IE 10', 'last 2 versions']}))
     .pipe(minifyCSS())                      // minify them
-    .pipe(concat('cookieconsent.min.css'))  // combine them
+    .pipe(concat('gdprconsent.min.css'))  // combine them
     .pipe(gulp.dest(buildFolder));          // save under a new name
 });
 
@@ -53,12 +60,12 @@ gulp.task('bump', function(callback) {
 });
 
 gulp.task('build', function(callback) {
-  return runSequence('cleanup:begin', 'minify:js', 'minify:css', callback);
+  return runSequence('cleanup:begin', 'minify:js', 'sass', 'minify:css', callback);
 });
 
 gulp.task('verify', function(callback) {
   buildFolder = "./build-verify";
-  return runSequence('cleanup:begin', 'minify:js', 'minify:css', 'verify:diff', callback);
+  return runSequence('cleanup:begin', 'minify:js', 'sass', 'minify:css', 'verify:diff', callback);
 });
 
 gulp.task('verify:diff', function(callback) {
@@ -69,14 +76,14 @@ gulp.task('verify:diff', function(callback) {
 
 gulp.task('build:release', function(callback) {
   if (yargs.argv.tag===undefined) {
-    throw "A version number (e.g. 3.0.1) is required to build a release of cookieconsent"
+    throw "A version number (e.g. 1.0.0) is required to build a release of gdprconsent"
   }
 
   return runSequence('build', 'bump', callback)
 });
 
 gulp.task('watch', function() {
-  gulp.watch(cssBuildFiles.concat(jsBuildFiles), ['build']);
+  gulp.watch(['./src/**/*.scss', './src/**/*.js'], ['build']);
 });
 
 function _minify(opts) {

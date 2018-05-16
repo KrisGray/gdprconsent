@@ -8,7 +8,7 @@
   <title>Demo 1 - Themes</title>
 
   <link href="examples/style.css" rel="stylesheet">
-  <link href="build/cookieconsent.min.css" rel="stylesheet">
+  <link href="build/gdprconsent.min.css" rel="stylesheet">
 
 <body role="document">
 
@@ -19,7 +19,7 @@
         <h1><span>Demo 1</span> Themes</h1>
 
         <p>
-          See what you can do with some of <a href="http://cookieconsent.insites.com/">Cookie Consent's</a> themes:
+          See what you can do with some of <a href="">GDPR Consent's</a> themes:
         </p>
 
         <ul class="example-selector"></ul>
@@ -31,7 +31,7 @@
   </div>
 
 <script src="examples/script.js"></script>
-<script src="build/cookieconsent.min.js"></script>
+<script src="build/gdprconsent.min.js"></script>
 <script>
 
   (function (C, U) {
@@ -46,8 +46,8 @@
       corporate: {"popup":{"background":"#edeff5","text":"#838391"},"button":{"background":"#4b81e8"}}
     };
 
-    cookiePopups = U.initialisePopupSelector({
-      cookieconsent: C,
+    gdprPopups = U.initialisePopupSelector({
+      gdprconsent: C,
       selector: document.querySelector('.example-selector'),
       popups: {
         'Mono': {
@@ -61,7 +61,7 @@
           palette: palettes.honeybee,
         },
         'Blurple': {
-          type: 'opt-out',
+          type: 'opt-in',
           position: 'bottom-left',
           palette: palettes.blurple,
           content: {
@@ -79,7 +79,7 @@
           }
         },
         'Cosmo': {
-          type: 'opt-out',
+          type: 'opt-in',
           position: 'bottom',
           palette: palettes.cosmo,
         },
@@ -99,6 +99,6 @@
         }
       },
     });
-  } (window.cookieconsent, window.cookieconsent_example_util));
+  } (window.gdprconsent, window.gdprconsent_example_util));
 
 </script>

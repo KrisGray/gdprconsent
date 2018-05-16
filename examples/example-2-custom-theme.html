@@ -8,7 +8,7 @@
   <title>Demo 2 - Custom CSS</title>
 
   <link href="examples/style.css" rel="stylesheet">
-  <link href="build/cookieconsent.min.css" rel="stylesheet">
+  <link href="build/gdprconsent.min.css" rel="stylesheet">
   <link href="examples/customTheme.css" rel="stylesheet">
 
 <body class="example2" role="document">
@@ -20,7 +20,7 @@
         <h1><span>Demo 2</span> Custom CSS</h1>
 
         <p>
-          See every part of <a href="http://cookieconsent.insites.com/">Cookie Consent</a> overridden
+          See every part of <a href="">GDPR Consent</a> overridden
           with slightly crazy custom CSS.
         </p>
 
@@ -34,17 +34,17 @@
   </div>
 
 <script src="examples/script.js"></script>
-<script src="build/cookieconsent.min.js"></script>
+<script src="build/gdprconsent.min.js"></script>
 <script>
 
-  (function (C, U) {
+  (function (G, U) {
     pageState = U.initialisePopupSelector({
-      cookieconsent: C,
+      gdprconsent: G,
       selector: document.querySelector('.example-selector'),
       popups: {
         'Click me': {},
       },
     });
-  } (window.cookieconsent, window.cookieconsent_example_util));
+  } (window.gdprconsent, window.gdprconsent_example_util));
 
 </script>

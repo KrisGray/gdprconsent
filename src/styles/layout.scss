@@ -2,60 +2,60 @@
 /* By layout, we mean the physical position of the elements on the popup window, and the margin / padding around those elements. */
 
 
-.cc-revoke.cc-top {top:0; left: 3em; border-bottom-left-radius:.5em;border-bottom-right-radius:.5em;}
-.cc-revoke.cc-bottom {bottom:0; left: 3em; border-top-left-radius:.5em;border-top-right-radius:.5em;}
-.cc-revoke.cc-left{left: 3em; right: unset;}
-.cc-revoke.cc-right{right: 3em; left: unset;}
+.gc-revoke.gc-top {top:0; left: 3em; border-bottom-left-radius:.5em;border-bottom-right-radius:.5em;}
+.gc-revoke.gc-bottom {bottom:0; left: 3em; border-top-left-radius:.5em;border-top-right-radius:.5em;}
+.gc-revoke.gc-left{left: 3em; right: unset;}
+.gc-revoke.gc-right{right: 3em; left: unset;}
 
 /**************************************** FLOATING ****************************************/
 
 /* these classes position the floating element */
-.cc-top {top: 1em} .cc-left {left: 1em} .cc-right {right: 1em} .cc-bottom {bottom: 1em}
+.gc-top {top: 1em} .gc-left {left: 1em} .gc-right {right: 1em} .gc-bottom {bottom: 1em}
 
 
 /* links that are direct decendants should be displayed as block */
-.cc-floating>.cc-link {
+.gc-floating>.gc-link {
   margin-bottom: 1em
 }
 
-.cc-floating .cc-message {
+.gc-floating .gc-message {
   display: block;
   margin-bottom: 1em;
 }
 
 
-.cc-window.cc-floating .cc-compliance {
+.gc-window.gc-floating .gc-compliance {
   flex: 1 0 auto;
 }
 
 /**************************************** BANNER ****************************************/
 
-.cc-window.cc-banner {
+.gc-window.gc-banner {
   align-items: center;
 }
 
-.cc-banner.cc-top {
+.gc-banner.gc-top {
   left: 0; right: 0; top: 0;
 }
-.cc-banner.cc-bottom {
+.gc-banner.gc-bottom {
   left: 0; right: 0; bottom: 0;
 }
 
-.cc-banner .cc-message {
+.gc-banner .gc-message {
   flex: 1;
 }
 
 /* COMPLIANCE BOX */
 
-.cc-compliance {
+.gc-compliance {
   display: flex;
   align-items: center;
   align-content: space-between;
 }
-.cc-compliance>.cc-btn {
+.gc-compliance>.gc-btn {
   flex: 1;
 }
 
-.cc-btn + .cc-btn {
+.gc-btn + .gc-btn {
   margin-left: .5em;
 }

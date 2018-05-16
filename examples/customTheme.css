@@ -1,9 +1,9 @@
 
-.cc-window {
+.gc-window {
   color: black;
 }
 
-.cc-message {
+.gc-message {
   width: auto;
   background: white;
   padding: 20px 76px 20px 16px;
@@ -12,11 +12,11 @@
   margin-left: 20%;
 }
 
-.cc-link, .cc-link:visited {
+.gc-link, .gc-link:visited {
   color: red;
 }
 
-.cc-btn {
+.gc-btn {
   background: #0000ff;
   background: -moz-radial-gradient(center, ellipse cover, #0000ff 0%, #99007c 100%);
   background: -webkit-radial-gradient(center, ellipse cover, #0000ff 0%,#99007c 100%);
@@ -31,7 +31,7 @@
   animation:spin 4s linear infinite;
 }
 
-.cc-btn:hover {
+.gc-btn:hover {
   background: #99007c;
   -webkit-animation: none;
   -moz-animation:none;

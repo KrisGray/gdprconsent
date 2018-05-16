@@ -8,7 +8,7 @@
   <title>Demo 7 - JavaScript API</title>
 
   <link href="examples/style.css" rel="stylesheet">
-  <link href="build/cookieconsent.min.css" rel="stylesheet">
+  <link href="build/gdprconsent.min.css" rel="stylesheet">
 
 <body class="example7" role="document">
 
@@ -16,10 +16,10 @@
     <div class="center-inner">
       <div class="example-window" role="main">
 
-        <h1><span>Demo 7</span> JavaScript API</h1>
+        <h1><span>Demo 6</span> JavaScript API</h1>
 
         <p>
-          Programmers can hook into our <a href="http://cookieconsent.insites.com/documentation/javascript-api/">JavaScript API</a>.
+          Programmers can hook into the <a href="">JavaScript API</a>.
           Fire events to see what happens:
         </p>
 
@@ -34,7 +34,6 @@
         <h3>Set status</h3>
 
         <div class="btn-group">
-          <button type="button" class="btn" id="btn-dismissCookie">Dismissed</button>
           <button type="button" class="btn" id="btn-allowCookie">Allowed</button>
           <button type="button" class="btn" id="btn-denyCookie">Denied</button>
           <button type="button" class="btn" id="btn-revokeChoice">Revoke choice</button>
@@ -44,14 +43,14 @@
 
         <pre id="console"></pre>
 
-        <a href="examples/example-6-location.html" class="page-switcher page-switcher-prev" title="Previous demo">&#9664;</a>
+        <a href="examples/example-5-location.html" class="page-switcher page-switcher-prev" title="Previous demo">&#9664;</a>
 
       </div>
     </div>
   </div>
 
 <script src="examples/script.js"></script>
-<script src="build/cookieconsent.min.js"></script>
+<script src="build/gdprconsent.min.js"></script>
 <script>
 
   var h = document.getElementById('console');
@@ -62,7 +61,7 @@
   }
 
   var p;
-  cookieconsent.initialise({
+  gdprconsent.initialise({
     type: 'opt-out',
     palette: {
       "popup":{"background":"#eaf7f7","text":"#5c7291"},
@@ -89,23 +88,16 @@
     console.error(err);
   });
 
-  document.getElementById('btn-dismissCookie').onclick = function (e) {
-    log("Calling <em>setStatus(cookieconsent.status.dismiss)</em>");
-    p.setStatus(cookieconsent.status.dismiss);
-    log("Calling <em>close()</em>");
-    p.close();
-  };
-
   document.getElementById('btn-allowCookie').onclick = function (e) {
-    log("Calling <em>setStatus(cookieconsent.status.allow)</em>");
-    p.setStatus(cookieconsent.status.allow);
+    log("Calling <em>setStatus(gdprconsent.status.allow)</em>");
+    p.setStatus(gdprconsent.status.allow);
     log("Calling <em>close()</em>");
     p.close();
   };
 
   document.getElementById('btn-denyCookie').onclick = function (e) {
-    log("Calling <em>setStatus(cookieconsent.status.deny)</em>");
-    p.setStatus(cookieconsent.status.deny);
+    log("Calling <em>setStatus(gdprconsent.status.deny)</em>");
+    p.setStatus(gdprconsent.status.deny);
     log("Calling <em>close()</em>");
     p.close();
   };
@@ -129,7 +121,7 @@
   document.getElementById('btn-destroy').onclick = function (e) {
     log("Calling <em>destroy()</em>");
     p.destroy();
-    log("<span class='alert'>Cookie Consent has been destroyed and cannot be used again. Reload the page.</span>");
+    log("<span class='alert'>GDPR Consent has been destroyed and cannot be used again. Reload the page.</span>");
   };
 
 

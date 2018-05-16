@@ -1,15 +1,17 @@
 {
-  "name": "cookieconsent",
-  "version": "3.0.6",
-  "homepage": "http://cookieconsent.insites.com/",
+  "name": "gdprconsent",
+  "version": "1.0.0",
+  "homepage": "",
   "authors": [
-    "Insites"
+    "KrisGray"
   ],
-  "description": "Insites' cookie consent plugin",
-  "main": ["build/cookieconsent.min.js", "build/cookieconsent.min.css"],
+  "description": "KrisGray's cookie and GDPR consent plugin based on insites/cookieconsent",
+  "main": ["build/gdprconsent.min.js", "build/gdprconsent.min.css"],
   "keywords": [
+    "gdprconsent",
     "cookieconsent",
     "cookie",
+    "GDPR",
     "law"
   ],
   "license": "MIT",

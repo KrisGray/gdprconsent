@@ -1,6 +1,7 @@
-
+@import 'animation';
 /* the popup window */
-.cc-window, .cc-revoke {
+
+.gc-window {
   position: fixed;
   overflow: hidden;
   box-sizing: border-box; /* exclude padding when dealing with width */
@@ -16,54 +17,55 @@
   z-index: 9999;
 }
 
-.cc-window.cc-static {
+.gc-window.gc-static {
   position: static;
 }
 
 /* 2 basic types of window - floating / banner */
-.cc-window.cc-floating {
+.gc-window.gc-floating {
   padding: 2em;
   max-width: 24em; /* 1em == 16px therefore 24em == 384px */
   flex-direction: column;
 }
-.cc-window.cc-banner {
+.gc-window.gc-banner {
   padding: 1em 1.8em;
   width: 100%;
   flex-direction:  row;
 }
 
-.cc-revoke {
+.gc-revoke {
+  @extend .gc-window;
   padding: .5em;
 }
-.cc-revoke:hover {
+.gc-revoke:hover {
   text-decoration: underline;
 }
 
-.cc-header {
+.gc-header {
   font-size: 18px;
   font-weight: bold;
 }
 
 /* clickable things */
-.cc-btn, .cc-link, .cc-close, .cc-revoke {
+.gc-btn, .gc-link, .gc-close, .gc-revoke {
   cursor: pointer;
 }
 
-.cc-link {
+.gc-link {
   opacity: .8;
   display: inline-block;
   padding: .2em;
   text-decoration: underline;
 }
-.cc-link:hover {
+.gc-link:hover {
   opacity: 1;
 }
-.cc-link:active, .cc-link:visited {
+.gc-link:active, .gc-link:visited {
   color: initial;
 }
 
 
-.cc-btn {
+.gc-btn {
   display: block;
   padding: .4em .8em;
   font-size: 0.9em;
@@ -74,23 +76,24 @@
   white-space: nowrap;
 }
 
-.cc-banner .cc-btn:last-child {
+.gc-banner .gc-btn:last-child {
   min-width: 140px;
 }
 
-.cc-highlight .cc-btn:first-child {
-  background-color: transparent;
-  border-color: transparent;
+.gc-highlight {
+  .gc-btn:first-child {
+    background-color: transparent;
+    border-color: transparent;
+  }
+
+  .gc-btn:first-child:hover,
+  .gc-btn:first-child:focus {
+    background-color: transparent;
+    text-decoration: underline;
+  }
 }
 
-.cc-highlight .cc-btn:first-child:hover,
-.cc-highlight .cc-btn:first-child:focus {
-  background-color: transparent;
-  text-decoration: underline;
-}
-
-
-.cc-close {
+.gc-close {
   display: block;
   position: absolute;
   top: .5em;
@@ -103,7 +106,13 @@
   /*  - setting the line height normalises the height */
   line-height: .75;
 }
-.cc-close:hover,
-.cc-close:focus {
+.gc-close:hover,
+.gc-close:focus {
   opacity: 1;
 }
+
+@import 'animation';
+@import 'layout';
+@import 'media';
+@import 'themes/classic';
+@import 'themes/edgeless';

@@ -1,6 +1,6 @@
-(function(cc) {
-  // stop from running again, if accidently included more than once.
-  if (cc.hasInitialised) return;
+(function(gc) {
+  // stop from running again, if accidentally included more than once.
+  if (gc.hasInitialised) return;
 
   var util = {
     // http://stackoverflow.com/questions/3446170/escape-string-for-use-in-javascript-regex
@@ -25,7 +25,7 @@
 
     interpolateString: function(str, callback) {
       var marker = /{{([a-z][a-z0-9\-_]*)}}/ig;
-      return str.replace(marker, function(matches) {
+      return str.replace(marker, function() {
         return callback(arguments[1]) || '';
       })
     },
@@ -136,14 +136,13 @@
   };
 
   // valid cookie values
-  cc.status = {
+  gc.status = {
     deny: 'deny',
-    allow: 'allow',
-    dismiss: 'dismiss'
+    allow: 'allow'
   };
 
   // detects the `transitionend` event name
-  cc.transitionEnd = (function() {
+  gc.transitionEnd = (function() {
     var el = document.createElement('div');
     var trans = {
       t: "transitionend",
@@ -161,15 +160,15 @@
     return '';
   }());
 
-  cc.hasTransition = !!cc.transitionEnd;
+  gc.hasTransition = !!gc.transitionEnd;
 
   // array of valid regexp escaped statuses
-  var __allowedStatuses = Object.keys(cc.status).map(util.escapeRegExp);
+  var __allowedStatuses = Object.keys(gc.status).map(util.escapeRegExp);
 
   // contains references to the custom <style> tags
-  cc.customStyles = {};
+  gc.customStyles = {};
 
-  cc.Popup = (function() {
+  gc.Popup = (function() {
 
     var defaultOptions = {
 
@@ -182,7 +181,7 @@
       // defaults cookie options - it is RECOMMENDED to set these values to correspond with your server
       cookie: {
         // This is the name of this cookie - you can ignore this
-        name: 'cookieconsent_status',
+        name: 'gdprconsent_status',
 
         // This is the url path that the cookie 'name' belongs to. The cookie can only be read at this location
         path: '/',
@@ -198,36 +197,34 @@
       // these callback hooks are called at certain points in the program execution
       onPopupOpen: function() {},
       onPopupClose: function() {},
-      onInitialise: function(status) {},
-      onStatusChange: function(status, chosenBefore) {},
+      onInitialise: function() {},
+      onStatusChange: function() {},
       onRevokeChoice: function() {},
 
       // each item defines the inner text for the element that it references
       content: {
-        header: 'Cookies used on the website!',
-        message: 'This website uses cookies to ensure you get the best experience on our website.',
-        dismiss: 'Got it!',
-        allow: 'Allow cookies',
+        header: 'Privacy &amp; Cookie notice!',
+        message: 'This website uses cookies and stores the IP address to ensure you get the best experience on our website. Please read the Ts &amp Cs.',
+        allow: 'Accept Ts &amp; Cs',
         deny: 'Decline',
-        link: 'Learn more',
+        link: 'Privacy Terms &amp; Conditions',
         href: 'http://cookiesandyou.com',
         close: '&#x274c;',
       },
-
+      GDPR_VERSION: '25-May-2018',
       // This is the HTML for the elements above. The string {{header}} will be replaced with the equivalent text below.
       // You can remove "{{header}}" and write the content directly inside the HTML if you want.
       //
       //  - ARIA rules suggest to ensure controls are tabbable (so the browser can find the first control),
       //    and to set the focus to the first interactive control (http://w3c.github.io/aria-in-html/)
       elements: {
-        header: '<span class="cc-header">{{header}}</span>&nbsp;',
-        message: '<span id="cookieconsent:desc" class="cc-message">{{message}}</span>',
-        messagelink: '<span id="cookieconsent:desc" class="cc-message">{{message}} <a aria-label="learn more about cookies" role=button tabindex="0" class="cc-link" href="{{href}}" rel="noopener noreferrer nofollow" target="_blank">{{link}}</a></span>',
-        dismiss: '<a aria-label="dismiss cookie message" role=button tabindex="0" class="cc-btn cc-dismiss">{{dismiss}}</a>',
-        allow: '<a aria-label="allow cookies" role=button tabindex="0"  class="cc-btn cc-allow">{{allow}}</a>',
-        deny: '<a aria-label="deny cookies" role=button tabindex="0" class="cc-btn cc-deny">{{deny}}</a>',
-        link: '<a aria-label="learn more about cookies" role=button tabindex="0" class="cc-link" href="{{href}}" target="_blank">{{link}}</a>',
-        close: '<span aria-label="dismiss cookie message" role=button tabindex="0" class="cc-close">{{close}}</span>',
+        header: '<span class="gc-header">{{header}}</span>&nbsp;',
+        message: '<span id="gdprconsent:desc" class="gc-message">{{message}}</span>',
+        messagelink: '<span id="gdprconsent:desc" class="gc-message">{{message}} <a aria-label="learn more about cookies" role=button tabindex="0" class="gc-link" href="{{href}}" rel="noopener noreferrer nofollow" target="_blank">{{link}}</a></span>',
+        allow: '<a aria-label="allow cookies" role=button tabindex="0"  class="gc-btn gc-allow">{{allow}}</a>',
+        deny: '<a aria-label="deny cookies" role=button tabindex="0" class="gc-btn gc-deny">{{deny}}</a>',
+        link: '<a aria-label="learn more about cookies" role=button tabindex="0" class="gc-link" href="{{href}}" target="_blank">{{link}}</a>',
+        close: '<span aria-label="deny cookie message" role=button tabindex="0" class="gc-close">{{close}}</span>',
 
         //compliance: compliance is also an element, but it is generated by the application, depending on `type` below
       },
@@ -235,17 +232,16 @@
       // The placeholders {{classes}} and {{children}} both get replaced during initialisation:
       //  - {{classes}} is where additional classes get added
       //  - {{children}} is where the HTML children are placed
-      window: '<div role="dialog" aria-live="polite" aria-label="cookieconsent" aria-describedby="cookieconsent:desc" class="cc-window {{classes}}"><!--googleoff: all-->{{children}}<!--googleon: all--></div>',
+      window: '<div role="dialog" aria-live="polite" aria-label="gdprconsent" aria-describedby="gdprconsent:desc" class="gc-window {{classes}}"><!--googleoff: all-->{{children}}<!--googleon: all--></div>',
 
       // This is the html for the revoke button. This only shows up after the user has selected their level of consent
       // It can be enabled of disabled using the `revokable` option
-      revokeBtn: '<div class="cc-revoke {{classes}}">Cookie Policy</div>',
+      revokeBtn: '<div class="gc-revoke {{classes}}">Privacy Policy</div>',
 
       // define types of 'compliance' here. '{{value}}' strings in here are linked to `elements`
       compliance: {
-        'info': '<div class="cc-compliance">{{dismiss}}</div>',
-        'opt-in': '<div class="cc-compliance cc-highlight">{{dismiss}}{{allow}}</div>',
-        'opt-out': '<div class="cc-compliance cc-highlight">{{deny}}{{dismiss}}</div>',
+        'info': '<div class="gc-compliance">{{allow}}</div>',
+        'opt-in': '<div class="cc-compliance cc-highlight">{{deny}}{{allow}}</div>'
       },
 
       // select your type of popup here
@@ -258,7 +254,7 @@
         'basic-close': '{{messagelink}}{{compliance}}{{close}}',
         'basic-header': '{{header}}{{message}}{{link}}{{compliance}}',
 
-        // add a custom layout here, then add some new css with the class '.cc-layout-my-cool-layout'
+        // add a custom layout here, then add some new css with the class '.gc-layout-my-cool-layout'
         //'my-cool-layout': '<div class="my-special-layout">{{message}}{{compliance}}</div>{{close}}',
       },
 
@@ -269,14 +265,14 @@
       //  - banner positions: top, bottom
       //  - floating positions: top-left, top-right, bottom-left, bottom-right
       //
-      // adds a class `cc-floating` or `cc-banner` which helps when styling
+      // adds a class `gc-floating` or `gc-banner` which helps when styling
       position: 'bottom', // default position is 'bottom'
 
       // Available styles
       //    -block (default, no extra classes)
       //    -edgeless
       //    -classic
-      // use your own style name and use `.cc-theme-STYLENAME` class in CSS to edit.
+      // use your own style name and use `.gc-theme-STYLENAME` class in CSS to edit.
       // Note: style "wire" is used for the configurator, but has no CSS styles of its own, only palette is used.
       theme: 'block',
 
@@ -296,21 +292,15 @@
       palette: null,
 
       // Some countries REQUIRE that a user can change their mind. You can configure this yourself.
-      // Most of the time this should be false, but the `cookieconsent.law` can change this to `true` if it detects that it should
+      // Most of the time this should be false, but the `gdprconsent.law` can change this to `true` if it detects that it should
       revokable: false,
 
-      // if true, the revokable button will tranlate in and out
+      // if true, the revokable button will translate in and out
       animateRevokable: true,
 
       // used to disable link on existing layouts
       // replaces element messagelink with message and removes content of link
       showLink: true,
-
-      // set value as scroll range to enable
-      dismissOnScroll: false,
-
-      // set value as time in milliseconds to autodismiss after set time
-      dismissOnTimeout: false,
 
       // The application automatically decide whether the popup should open.
       // Set this to false to prevent this from happening and to allow you to control the behaviour yourself
@@ -319,7 +309,7 @@
       // By default the created HTML is automatically appended to the container (which defaults to <body>). You can prevent this behaviour
       // by setting this to false, but if you do, you must attach the `element` yourself, which is a public property of the popup instance:
       // 
-      //     var instance = cookieconsent.factory(options);
+      //     var instance = gdprconsent.factory(options);
       //     document.body.appendChild(instance.element);
       //
       autoAttach: true,
@@ -331,16 +321,16 @@
       blacklistPage: [],
 
       // If this is defined, then it is used as the inner html instead of layout. This allows for ultimate customisation.
-      // Be sure to use the classes `cc-btn` and `cc-allow`, `cc-deny` or `cc-dismiss`. They enable the app to register click
+      // Be sure to use the classes `gc-btn` and `gc-allow` or `gc-deny`. They enable the app to register click
       // handlers. You can use other pre-existing classes too. See `src/styles` folder.
       overrideHTML: null,
     };
 
-    function CookiePopup() {
+    function GDPRPopup() {
       this.initialise.apply(this, arguments);
     }
 
-    CookiePopup.prototype.initialise = function(options) {
+    GDPRPopup.prototype.initialise = function(options) {
       if (this.options) {
         this.destroy(); // already rendered
       }
@@ -356,7 +346,10 @@
       // returns true if `onComplete` was called
       if (checkCallbackHooks.call(this)) {
         // user has already answered
-        this.options.enabled = false;
+        if (this.checkVersion()) {
+          this.options.enabled = false;
+        }
+        
       }
 
       // apply blacklist / whitelist
@@ -368,31 +361,29 @@
       }
 
       // the full markup either contains the wrapper or it does not (for multiple instances)
-      var cookiePopup = this.options.window
+      var gdprPopup = this.options.window
         .replace('{{classes}}', getPopupClasses.call(this).join(' '))
         .replace('{{children}}', getPopupInnerMarkup.call(this));
 
       // if user passes html, use it instead
       var customHTML = this.options.overrideHTML;
       if (typeof customHTML == 'string' && customHTML.length) {
-        cookiePopup = customHTML;
+        gdprPopup = customHTML;
       }
 
       // if static, we need to grow the element from 0 height so it doesn't jump the page
       // content. we wrap an element around it which will mask the hidden content
       if (this.options.static) {
         // `grower` is a wrapper div with a hidden overflow whose height is animated
-        var wrapper = appendMarkup.call(this, '<div class="cc-grower">' + cookiePopup + '</div>');
+        var wrapper = appendMarkup.call(this, '<div class="gc-grower">' + gdprPopup + '</div>');
 
         wrapper.style.display = ''; // set it to visible (because appendMarkup hides it)
         this.element = wrapper.firstChild; // get the `element` reference from the wrapper
         this.element.style.display = 'none';
-        util.addClass(this.element, 'cc-invisible');
+        util.addClass(this.element, 'gc-invisible');
       } else {
-        this.element = appendMarkup.call(this, cookiePopup);
+        this.element = appendMarkup.call(this, gdprPopup);
       }
-
-      applyAutoDismiss.call(this);
 
       applyRevokeButton.call(this);
 
@@ -401,15 +392,10 @@
       }
     };
 
-    CookiePopup.prototype.destroy = function() {
+    GDPRPopup.prototype.destroy = function() {
       if (this.onButtonClick && this.element) {
         this.element.removeEventListener('click', this.onButtonClick);
         this.onButtonClick = null;
-      }
-
-      if (this.dismissTimeout) {
-        clearTimeout(this.dismissTimeout);
-        this.dismissTimeout = null;
       }
 
       if (this.onWindowScroll) {
@@ -436,11 +422,11 @@
       this.options = null;
     };
 
-    CookiePopup.prototype.open = function(callback) {
+    GDPRPopup.prototype.open = function() {
       if (!this.element) return;
 
       if (!this.isOpen()) {
-        if (cc.hasTransition) {
+        if (gc.hasTransition) {
           this.fadeIn();
         } else {
           this.element.style.display = '';
@@ -449,17 +435,32 @@
         if (this.options.revokable) {
           this.toggleRevokeButton();
         }
+        if (this.options.type === 'opt-in'){
+          var myAllow = document.getElementsByClassName("gc-allow")[0].classList;
+          var myDeny  = document.getElementsByClassName("gc-deny")[0].classList;
+          if (!this.hasConsented()){
+            myDeny.remove('gc-notselected');
+            myDeny.add('gc-selected');
+            myAllow.remove('gc-selected');
+            myAllow.add('gc-notselected');
+          } else {
+            myAllow.remove('gc-notselected');
+            myAllow.add('gc-selected');
+            myDeny.remove('gc-selected');
+            myDeny.add('gc-notselected');
+          }
+        }
         this.options.onPopupOpen.call(this);
       }
 
       return this;
     };
 
-    CookiePopup.prototype.close = function(showRevoke) {
+    GDPRPopup.prototype.close = function(showRevoke) {
       if (!this.element) return;
 
       if (this.isOpen()) {
-        if (cc.hasTransition) {
+        if (gc.hasTransition) {
           this.fadeOut();
         } else {
           this.element.style.display = 'none';
@@ -474,10 +475,10 @@
       return this;
     };
 
-    CookiePopup.prototype.fadeIn = function() {
+    GDPRPopup.prototype.fadeIn = function() {
       var el = this.element;
 
-      if (!cc.hasTransition || !el)
+      if (!gc.hasTransition || !el)
         return;
 
       // This should always be called AFTER fadeOut (which is governed by the 'transitionend' event).
@@ -487,7 +488,7 @@
         afterFadeOut.call(this, el)
       }
 
-      if (util.hasClass(el, 'cc-invisible')) {
+      if (util.hasClass(el, 'gc-invisible')) {
         el.style.display = '';
 
         if (this.options.static) {
@@ -498,18 +499,18 @@
         var fadeInTimeout = 20; // (ms) DO NOT MAKE THIS VALUE SMALLER. See below
 
         // Although most browsers can handle values less than 20ms, it should remain above this value.
-        // This is because we are waiting for a "browser redraw" before we remove the 'cc-invisible' class.
-        // If the class is remvoed before a redraw could happen, then the fadeIn effect WILL NOT work, and
+        // This is because we are waiting for a "browser redraw" before we remove the 'gc-invisible' class.
+        // If the class is removed before a redraw could happen, then the fadeIn effect WILL NOT work, and
         // the popup will appear from nothing. Therefore we MUST allow enough time for the browser to do
-        // its thing. The actually difference between using 0 and 20 in a set timeout is neglegible anyway
+        // its thing. The actually difference between using 0 and 20 in a set timeout is negligible anyway
         this.openingTimeout = setTimeout(afterFadeIn.bind(this, el), fadeInTimeout);
       }
     };
 
-    CookiePopup.prototype.fadeOut = function() {
+    GDPRPopup.prototype.fadeOut = function() {
       var el = this.element;
 
-      if (!cc.hasTransition || !el)
+      if (!gc.hasTransition || !el)
         return;
 
       if (this.openingTimeout) {
@@ -517,82 +518,105 @@
         afterFadeIn.bind(this, el);
       }
 
-      if (!util.hasClass(el, 'cc-invisible')) {
+      if (!util.hasClass(el, 'gc-invisible')) {
         if (this.options.static) {
           this.element.parentNode.style.maxHeight = '';
         }
 
         this.afterTransition = afterFadeOut.bind(this, el);
-        el.addEventListener(cc.transitionEnd, this.afterTransition);
+        el.addEventListener(gc.transitionEnd, this.afterTransition);
 
-        util.addClass(el, 'cc-invisible');
+        util.addClass(el, 'gc-invisible');
       }
     };
 
-    CookiePopup.prototype.isOpen = function() {
-      return this.element && this.element.style.display == '' && (cc.hasTransition ? !util.hasClass(this.element, 'cc-invisible') : true);
+    GDPRPopup.prototype.isOpen = function() {
+      return this.element && this.element.style.display == '' && (gc.hasTransition ? !util.hasClass(this.element, 'gc-invisible') : true);
     };
 
-    CookiePopup.prototype.toggleRevokeButton = function(show) {
+    GDPRPopup.prototype.toggleRevokeButton = function(show) {
       if (this.revokeBtn) this.revokeBtn.style.display = show ? '' : 'none';
     };
 
-    CookiePopup.prototype.revokeChoice = function(preventOpen) {
+    GDPRPopup.prototype.revokeChoice = function(preventOpen) {
       this.options.enabled = true;
-      this.clearStatus();
+      if(this.options.type === 'opt-in'){
+          //We don't want this next line as we want the button to pop up and allow us to change the settings.
+          //this.clearStatus();
+      
+          this.options.onRevokeChoice.call(this);
 
-      this.options.onRevokeChoice.call(this);
-
-      if (!preventOpen) {
-        this.autoOpen();
+           if (!preventOpen) {
+              this.autoOpen();
+          }
+          this.open();
+      } else {
+          this.clearStatus();
+          this.options.onRevokeChoice.call(this);
+          if (!preventOpen) {
+              this.autoOpen();
+          }
       }
     };
 
     // returns true if the cookie has a valid value
-    CookiePopup.prototype.hasAnswered = function(options) {
-      return Object.keys(cc.status).indexOf(this.getStatus()) >= 0;
+    GDPRPopup.prototype.hasAnswered = function() {
+      return Object.keys(gc.status).indexOf(this.getStatus()) >= 0;
     };
 
     // returns true if the cookie indicates that consent has been given
-    CookiePopup.prototype.hasConsented = function(options) {
+    GDPRPopup.prototype.hasConsented = function() {
       var val = this.getStatus();
-      return val == cc.status.allow || val == cc.status.dismiss;
+      return val == gc.status.allow || val == gc.status.deny;
     };
 
     // opens the popup if no answer has been given
-    CookiePopup.prototype.autoOpen = function(options) {
+    GDPRPopup.prototype.autoOpen = function() {
       !this.hasAnswered() && this.options.enabled && this.open();
     };
 
-    CookiePopup.prototype.setStatus = function(status) {
+    GDPRPopup.prototype.setStatus = function(status) {
       var c = this.options.cookie;
       var value = util.getCookie(c.name);
-      var chosenBefore = Object.keys(cc.status).indexOf(value) >= 0;
-
+      var chosenBefore = Object.keys(gc.status).indexOf(value) >= 0;
       // if `status` is valid
-      if (Object.keys(cc.status).indexOf(status) >= 0) {
+      if (Object.keys(gc.status).indexOf(status) >= 0) {
         util.setCookie(c.name, status, c.expiryDays, c.domain, c.path);
-
-        this.options.onStatusChange.call(this, status, chosenBefore);
+        util.setCookie('gdpr_version', this.options.GDPR_VERSION, c.expiryDays, c.domain, c.path);
+        if (status === 'deny'){
+          this.clearStatus();
+        } else {
+          this.options.onStatusChange.call(this, status, chosenBefore);
+        }
       } else {
         this.clearStatus();
       }
     };
 
-    CookiePopup.prototype.getStatus = function() {
+    GDPRPopup.prototype.getStatus = function() {
       return util.getCookie(this.options.cookie.name);
     };
 
-    CookiePopup.prototype.clearStatus = function() {
+    GDPRPopup.prototype.clearStatus = function() {
       var c = this.options.cookie;
       util.setCookie(c.name, '', -1, c.domain, c.path);
+      util.setCookie('gdpr_version', '', -1, c.domain, c.path);
     };
+
+    GDPRPopup.prototype.checkVersion = function () {
+  if (util.getCookie('gdpr_version') !== this.options.GDPR_VERSION){
+    this.clearStatus();
+          this.open();
+          return false;
+      }
+      return true;
+}
 
     // This needs to be called after 'fadeIn'. This is the code that actually causes the fadeIn to work
     // There is a good reason why it's called in a timeout. Read 'fadeIn';
     function afterFadeIn(el) {
       this.openingTimeout = null;
-      util.removeClass(el, 'cc-invisible');
+      util.removeClass(el, 'gc-invisible');
     }
 
     // This is called on 'transitionend' (only on the transition of the fadeOut). That's because after we've faded out, we need to
@@ -600,28 +624,30 @@
     // is not called (lack of support), the open/close mechanism will still work.
     function afterFadeOut(el) {
       el.style.display = 'none'; // after close and before open, the display should be none
-      el.removeEventListener(cc.transitionEnd, this.afterTransition);
+      el.removeEventListener(gc.transitionEnd, this.afterTransition);
       this.afterTransition = null;
     }
 
     // this function calls the `onComplete` hook and returns true (if needed) and returns false otherwise
     function checkCallbackHooks() {
       var complete = this.options.onInitialise.bind(this);
+      
+
+
 
       if (!window.navigator.cookieEnabled) {
-        complete(cc.status.deny);
+        complete(gc.status.deny);
         return true;
       }
 
       if (window.CookiesOK || window.navigator.CookiesOK) {
-        complete(cc.status.allow);
+        complete(gc.status.allow);
         return true;
       }
-
-      var allowed = Object.keys(cc.status);
+      
+      var allowed = Object.keys(gc.status);
       var answer = this.getStatus();
       var match = allowed.indexOf(answer) >= 0;
-
       if (match) {
         complete(answer);
       }
@@ -634,7 +660,7 @@
 
       // top, left, right, bottom
       positions.forEach(function(cur) {
-        classes.push('cc-' + cur);
+        classes.push('gc-' + cur);
       });
 
       return classes;
@@ -649,19 +675,19 @@
       }
 
       var classes = [
-        'cc-' + positionStyle, // floating or banner
-        'cc-type-' + opts.type, // add the compliance type
-        'cc-theme-' + opts.theme, // add the theme
+        'gc-' + positionStyle, // floating or banner
+        'gc-type-' + opts.type, // add the compliance type
+        'gc-theme-' + opts.theme, // add the theme
       ];
 
       if (opts.static) {
-        classes.push('cc-static');
+        classes.push('gc-static');
       }
 
       classes.push.apply(classes, getPositionClasses.call(this));
 
       // we only add extra styles if `palette` has been set to a valid value
-      var didAttach = attachCustomPalette.call(this, this.options.palette);
+      attachCustomPalette.call(this, this.options.palette);
 
       // if we override the palette, add the class that enables this
       if (this.customStyleSelector) {
@@ -721,8 +747,8 @@
 
       el.style.display = 'none';
 
-      if (util.hasClass(el, 'cc-window') && cc.hasTransition) {
-        util.addClass(el, 'cc-invisible');
+      if (util.hasClass(el, 'gc-window') && gc.hasTransition) {
+        util.addClass(el, 'gc-invisible');
       }
 
       // save ref to the function handle so we can unbind it later
@@ -743,9 +769,9 @@
 
     function handleButtonClick(event) {
       var targ = event.target;
-      if (util.hasClass(targ, 'cc-btn')) {
+      if (util.hasClass(targ, 'gc-btn')) {
 
-        var matches = targ.className.match(new RegExp("\\bcc-(" + __allowedStatuses.join('|') + ")\\b"));
+        var matches = targ.className.match(new RegExp("\\bgc-(" + __allowedStatuses.join('|') + ")\\b"));
         var match = (matches && matches[1]) || false;
 
         if (match) {
@@ -753,11 +779,11 @@
           this.close(true);
         }
       }
-      if (util.hasClass(targ, 'cc-close')) {
-        this.setStatus(cc.status.dismiss);
+      if (util.hasClass(targ, 'gc-close')) {
+        this.setStatus(gc.status.deny);
         this.close(true);
       }
-      if (util.hasClass(targ, 'cc-revoke')) {
+      if (util.hasClass(targ, 'gc-revoke')) {
         this.revokeChoice();
       }
     }
@@ -766,7 +792,7 @@
     // single rule (something that happened a lot), the apps has changed slightly now though, so inline styles might be more applicable.
     function attachCustomPalette(palette) {
       var hash = util.hash(JSON.stringify(palette));
-      var selector = 'cc-color-override-' + hash;
+      var selector = 'gc-color-override-' + hash;
       var isValid = util.isPlainObject(palette);
 
       this.customStyleSelector = isValid ? selector : null;
@@ -780,9 +806,9 @@
     function addCustomStyle(hash, palette, prefix) {
 
       // only add this if a style like it doesn't exist
-      if (cc.customStyles[hash]) {
+      if (gc.customStyles[hash]) {
         // custom style already exists, so increment the reference count
-        ++cc.customStyles[hash].references;
+        ++gc.customStyles[hash].references;
         return;
       }
 
@@ -796,15 +822,15 @@
         // assumes popup.background is set
         popup.text = popup.text ? popup.text : util.getContrast(popup.background);
         popup.link = popup.link ? popup.link : popup.text;
-        colorStyles[prefix + '.cc-window'] = [
+        colorStyles[prefix + '.gc-window'] = [
           'color: ' + popup.text,
           'background-color: ' + popup.background
         ];
-        colorStyles[prefix + '.cc-revoke'] = [
+        colorStyles[prefix + '.gc-revoke'] = [
           'color: ' + popup.text,
           'background-color: ' + popup.background
         ];
-        colorStyles[prefix + ' .cc-link,' + prefix + ' .cc-link:active,' + prefix + ' .cc-link:visited'] = [
+        colorStyles[prefix + ' .gc-link,' + prefix + ' .gc-link:active,' + prefix + ' .gc-link:visited'] = [
           'color: ' + popup.link
         ];
 
@@ -812,14 +838,14 @@
           // assumes button.background is set
           button.text = button.text ? button.text : util.getContrast(button.background);
           button.border = button.border ? button.border : 'transparent';
-          colorStyles[prefix + ' .cc-btn'] = [
+          colorStyles[prefix + ' .gc-btn'] = [
             'color: ' + button.text,
             'border-color: ' + button.border,
             'background-color: ' + button.background
           ];
           
           if(button.background != 'transparent') 
-            colorStyles[prefix + ' .cc-btn:hover, ' + prefix + ' .cc-btn:focus'] = [
+            colorStyles[prefix + ' .gc-btn:hover, ' + prefix + ' .gc-btn:focus'] = [
               'background-color: ' + getHoverColour(button.background)
             ];
 
@@ -827,14 +853,14 @@
             //assumes highlight.background is set
             highlight.text = highlight.text ? highlight.text : util.getContrast(highlight.background);
             highlight.border = highlight.border ? highlight.border : 'transparent';
-            colorStyles[prefix + ' .cc-highlight .cc-btn:first-child'] = [
+            colorStyles[prefix + ' .gc-highlight .gc-btn:first-child'] = [
               'color: ' + highlight.text,
               'border-color: ' + highlight.border,
               'background-color: ' + highlight.background
             ];
           } else {
             // sets highlight text color to popup text. background and border are transparent by default.
-            colorStyles[prefix + ' .cc-highlight .cc-btn:first-child'] = [
+            colorStyles[prefix + ' .gc-highlight .gc-btn:first-child'] = [
               'color: ' + popup.text
             ];
           }
@@ -842,12 +868,12 @@
 
       }
 
-      // this will be interpretted as CSS. the key is the selector, and each array element is a rule
+      // this will be interpreted as CSS. the key is the selector, and each array element is a rule
       var style = document.createElement('style');
       document.head.appendChild(style);
 
       // custom style doesn't exist, so we create it
-      cc.customStyles[hash] = {
+      gc.customStyles[hash] = {
         references: 1,
         element: style.sheet
       };
@@ -872,13 +898,13 @@
     function removeCustomStyle(palette) {
       if (util.isPlainObject(palette)) {
         var hash = util.hash(JSON.stringify(palette));
-        var customStyle = cc.customStyles[hash];
+        var customStyle = gc.customStyles[hash];
         if (customStyle && !--customStyle.references) {
           var styleNode = customStyle.element.ownerNode;
           if (styleNode && styleNode.parentNode) {
             styleNode.parentNode.removeChild(styleNode);
           }
-          cc.customStyles[hash] = null;
+          gc.customStyles[hash] = null;
         }
       }
     }
@@ -895,32 +921,6 @@
       return false;
     }
 
-    function applyAutoDismiss() {
-      var setStatus = this.setStatus.bind(this);
-
-      var delay = this.options.dismissOnTimeout;
-      if (typeof delay == 'number' && delay >= 0) {
-        this.dismissTimeout = window.setTimeout(function() {
-          setStatus(cc.status.dismiss);
-        }, Math.floor(delay));
-      }
-
-      var scrollRange = this.options.dismissOnScroll;
-      if (typeof scrollRange == 'number' && scrollRange >= 0) {
-        var onWindowScroll = function(evt) {
-          if (window.pageYOffset > Math.floor(scrollRange)) {
-            setStatus(cc.status.dismiss);
-
-            window.removeEventListener('scroll', onWindowScroll);
-            this.onWindowScroll = null;
-          }
-        };
-
-        this.onWindowScroll = onWindowScroll;
-        window.addEventListener('scroll', onWindowScroll);
-      }
-    }
-
     function applyRevokeButton() {
       // revokable is true if advanced compliance is selected
       if (this.options.type != 'info') this.options.revokable = true;
@@ -930,7 +930,7 @@
       if (this.options.revokable) {
         var classes = getPositionClasses.call(this);
         if (this.options.animateRevokable) {
-          classes.push('cc-animate');
+          classes.push('gc-animate');
         }
         if (this.customStyleSelector) {
           classes.push(this.customStyleSelector)
@@ -940,22 +940,21 @@
 
         var btn = this.revokeBtn;
         if (this.options.animateRevokable) {
-          var wait = false;
           var onMouseMove = util.throttle(function(evt) {
             var active = false;
             var minY = 20;
             var maxY = (window.innerHeight - 20);
 
-            if (util.hasClass(btn, 'cc-top') && evt.clientY < minY) active = true;
-            if (util.hasClass(btn, 'cc-bottom') && evt.clientY > maxY) active = true;
+            if (util.hasClass(btn, 'gc-top') && evt.clientY < minY) active = true;
+            if (util.hasClass(btn, 'gc-bottom') && evt.clientY > maxY) active = true;
 
             if (active) {
-              if (!util.hasClass(btn, 'cc-active')) {
-                util.addClass(btn, 'cc-active');
+              if (!util.hasClass(btn, 'gc-active')) {
+                util.addClass(btn, 'gc-active');
               }
             } else {
-              if (util.hasClass(btn, 'cc-active')) {
-                util.removeClass(btn, 'cc-active');
+              if (util.hasClass(btn, 'gc-active')) {
+                util.removeClass(btn, 'gc-active');
               }
             }
           }, 200);
@@ -966,10 +965,10 @@
       }
     }
 
-    return CookiePopup
+    return GDPRPopup
   }());
 
-  cc.Location = (function() {
+  gc.Location = (function() {
 
     // An object containing all the location services we have already set up.
     // When using a service, it could either return a data structure in plain text (like a JSON object) or an executable script
@@ -977,7 +976,7 @@
 
     // When the service uses a script, the chances are that you'll have to use the script to make additional requests. In these
     // cases, the services `callback` property is called with a `done` function. When performing async operations, this must be called
-    // with the data (or Error), and `cookieconsent.locate` will take care of the rest
+    // with the data (or Error), and `gdprconsent.locate` will take care of the rest
     var defaultOptions = {
 
       // The default timeout is 5 seconds. This is mainly needed to catch JSONP requests that error.
@@ -1052,8 +1051,8 @@
           }
         },
 
-        // This service requires an option to define `key`. Options are proived using objects or functions
-        ipinfodb: function(options) {
+        // This service requires an option to define `key`. Options are provided using objects or functions
+        ipinfodb: function() {
           return {
             // This service responds with JSON, so we simply need to parse it and return the country code
             url: '//api.ipinfodb.com/v3/ip-country/?key={api_key}&format=json&callback={callback}',
@@ -1084,7 +1083,7 @@
                 return;
               }
 
-              geoip2.country(function(location) {
+              window.geoip2.country(function(location) {
                 try {
                   done({
                     code: location.country.iso_code
@@ -1117,11 +1116,10 @@
 
     Location.prototype.getNextService = function() {
       var service;
-
+      
       do {
         service = this.getServiceByIdx(++this.currentServiceIndex);
       } while (this.currentServiceIndex < this.options.services.length && !service);
-
       return service;
     };
 
@@ -1164,7 +1162,6 @@
 
       this.callbackComplete = complete;
       this.callbackError = error;
-
       this.runService(service, this.runNextServiceOnError.bind(this));
     };
 
@@ -1216,7 +1213,7 @@
         self.runServiceCallback.call(self, complete, service, responseText);
 
       }, this.options.timeout, service.data, service.headers);
-
+      
       // `service.data` and `service.headers` are optional (they only count if `!service.isScript` anyway)
     };
 
@@ -1368,7 +1365,7 @@
     return Location;
   }());
 
-  cc.Law = (function() {
+  gc.Law = (function() {
 
     var defaultOptions = {
       // Make this false if you want to disable all regional overrides for settings.
@@ -1387,7 +1384,7 @@
       explicitAction: ['HR', 'IT', 'ES'],
     };
 
-    function Law(options) {
+    function Law() {
       this.initialise.apply(this, arguments);
     }
 
@@ -1423,12 +1420,6 @@
           // We must provide an option to revoke consent at a later time
           options.revokable = true;
         }
-
-        if (country.explicitAction) {
-          // The user must explicitly click the consent button
-          options.dismissOnScroll = false;
-          options.dismissOnTimeout = false;
-        }
       }
       return options;
     };
@@ -1438,36 +1429,35 @@
 
   // This function initialises the app by combining the use of the Popup, Locator and Law modules
   // You can string together these three modules yourself however you want, by writing a new function.
-  cc.initialise = function(options, complete, error) {
-    var law = new cc.Law(options.law);
-
+  gc.initialise = function(options, complete, error) {
+    var law = new gc.Law(options.law);
+    
     if (!complete) complete = function() {};
     if (!error) error = function() {};
 
-    cc.getCountryCode(options, function(result) {
+    gc.getCountryCode(options, function(result) {
       // don't need the law or location options anymore
       delete options.law;
       delete options.location;
-
+      
       if (result.code) {
         options = law.applyLaw(options, result.code);
       }
-
-      complete(new cc.Popup(options));
+      complete(new gc.Popup(options));
     }, function(err) {
       // don't need the law or location options anymore
       delete options.law;
       delete options.location;
-
-      error(err, new cc.Popup(options));
+      error(err, new gc.Popup(options));
     });
+    
   };
 
-  // This function tries to find your current location. It either grabs it from a hardcoded option in
+  // This function tries to find your current location. It either grabs it from a hard coded option in
   // `options.law.countryCode`, or attempts to make a location service request. This function accepts
   // options (which can configure the `law` and `location` modules) and fires a callback with which
   // passes an object `{code: countryCode}` as the first argument (which can have undefined properties)
-  cc.getCountryCode = function(options, complete, error) {
+  gc.getCountryCode = function(options, complete, error) {
     if (options.law && options.law.countryCode) {
       complete({
         code: options.law.countryCode
@@ -1475,7 +1465,7 @@
       return;
     }
     if (options.location) {
-      var locator = new cc.Location(options.location);
+      var locator = new gc.Location(options.location);
       locator.locate(function(serviceResult) {
         complete(serviceResult || {});
       }, error);
@@ -1485,11 +1475,11 @@
   };
 
   // export utils (no point in hiding them, so we may as well expose them)
-  cc.utils = util;
+  gc.utils = util;
 
   // prevent this code from being run twice
-  cc.hasInitialised = true;
+  gc.hasInitialised = true;
 
-  window.cookieconsent = cc;
+  window.gdprconsent = gc;
 
-}(window.cookieconsent || {}));
+}(window.gdprconsent || {}));

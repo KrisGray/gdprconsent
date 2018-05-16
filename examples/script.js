@@ -1,5 +1,5 @@
 
-window['cookieconsent_example_util'] = {
+window['gdprconsent_example_util'] = {
 
   // Fill a select element with options (html can be configured using `cb`)
   fillSelect: function (select, options, selected, cb) {
@@ -85,7 +85,7 @@ window['cookieconsent_example_util'] = {
 
       myOpts.autoOpen = false;
 
-      options.cookieconsent.initialise(myOpts, function(idx, popup){
+      options.gdprconsent.initialise(myOpts, function(idx, popup){
         instances[idx] = popup;
       }.bind(null, i), function(idx, err, popup) {
         instances[idx] = popup;

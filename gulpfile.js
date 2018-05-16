@@ -12,49 +12,51 @@ var diff = require('gulp-diff');
 var sass = require('gulp-sass');
 var rename = require("gulp-rename");
 
-var buildFolder = './build';
-var cssFolder = './src/css';
-var jsBuildFiles = [
-  './src/gdprconsent.js'
+var buildFolder = './dist';
+var buildJS = buildFolder + '/js';
+var buildCSS = buildFolder + '/css';
+
+var cssFolder = './app/css';
+var jsDevFiles = [
+  './app/js/gdprconsent.js'
 ];
-var cssBuildFiles = [
-  // defined explicitly so they are combined in order
-  './src/css/gdprconsent.css'
+var cssDevFiles = [
+  cssFolder+'/gdprconsent.css'
 ];
 
 
 gulp.task('cleanup:begin', function () {
-  return deleteDirs([buildFolder, cssFolder]);
+  return deleteDirs([buildJS, buildCSS, cssFolder]);
 });
 
 gulp.task('sass', function(){
-  return gulp.src('./src/styles/base.scss')
+  return gulp.src('./app/scss/base.scss')
     .pipe(sass()) // Using gulp-sass
     .pipe(rename({
       basename: "gdprconsent",
       extname: ".css"
     }))
-    .pipe(gulp.dest('src/css'))
+    .pipe(gulp.dest('app/css'))
     
 });
 
 gulp.task('minify:js', function () {
-  return gulp.src(jsBuildFiles)            // get files
+  return gulp.src(jsDevFiles)            // get files
     .pipe(minifyJS())                      // minify them
     .pipe(concat('gdprconsent.min.js'))  // combine them
-    .pipe(gulp.dest(buildFolder));          // save under a new name
+    .pipe(gulp.dest(buildJS));          // save under a new name
 });
 
 gulp.task('minify:css', function () {
-  return gulp.src(cssBuildFiles)            // get files
+  return gulp.src(cssDevFiles)            // get files
     .pipe(autoprefixer({browsers: ['IE 10', 'last 2 versions']}))
     .pipe(minifyCSS())                      // minify them
     .pipe(concat('gdprconsent.min.css'))  // combine them
-    .pipe(gulp.dest(buildFolder));          // save under a new name
+    .pipe(gulp.dest(buildCSS));          // save under a new name
 });
 
 gulp.task('bump', function(callback) {
-  return gulp.src(['./bower.json', './package.json'])
+  return gulp.src(['./package.json'])
              .pipe(bump({'version': yargs.argv.tag}))
              .pipe(gulp.dest('./'))
 });
@@ -64,13 +66,21 @@ gulp.task('build', function(callback) {
 });
 
 gulp.task('verify', function(callback) {
-  buildFolder = "./build-verify";
-  return runSequence('cleanup:begin', 'minify:js', 'sass', 'minify:css', 'verify:diff', callback);
+  buildFolder = "./verify";
+  buildJS = buildFolder + '/js';
+  buildCSS = buildFolder + '/css';
+  return runSequence('cleanup:begin', 'minify:js', 'sass', 'minify:css', 'verify:diffjs', 'verify:diffcss', callback);
 });
 
-gulp.task('verify:diff', function(callback) {
-  return gulp.src('./build/*')
-             .pipe(diff('./build-verify'))
+gulp.task('verify:diffjs', function(callback) {
+  return gulp.src('./dist/js/*')
+             .pipe(diff('./verify/js'))
+             .pipe(diff.reporter({ fail: true }));
+});
+
+gulp.task('verify:diffcss', function(callback) {
+  return gulp.src('./dist/css/*')
+             .pipe(diff('./verify/css'))
              .pipe(diff.reporter({ fail: true }));
 });
 
@@ -83,7 +93,7 @@ gulp.task('build:release', function(callback) {
 });
 
 gulp.task('watch', function() {
-  gulp.watch(['./src/**/*.scss', './src/**/*.js'], ['build']);
+  gulp.watch(['./app/**/*.scss', './app/**/*.js'], ['build']);
 });
 
 function _minify(opts) {

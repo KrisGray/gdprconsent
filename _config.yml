@@ -1,1 +1,8 @@
+title: gdprconsent
+author :
+	  name : Kristian Gray
+	  email : kristian.gray@gmail.com
+	  github : KrisGray
+url: https://krisgray.github.io/gdprconsent/
+baseurl: https://krisgray.github.io/gdprconsent/
 theme: jekyll-theme-cayman

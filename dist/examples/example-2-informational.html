@@ -5,29 +5,28 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Demo 2 - Custom CSS</title>
+  <title>Demo 3 - Informational</title>
 
   <link href="examples/style.css" rel="stylesheet">
-  <link href="js/gdprconsent.min.css" rel="stylesheet">
-  <link href="examples/customTheme.css" rel="stylesheet">
+  <link href="css/gdprconsent.min.css" rel="stylesheet">
 </head>
-<body class="example2" role="document">
+<body class="example3" role="document">
 
   <div class="center-outer fit">
     <div class="center-inner">
       <div class="example-window" role="main">
 
-        <h1><span>Demo 2</span> Custom CSS</h1>
+        <h1><span>Demo 3</span> Informational</h1>
 
         <p>
-          See every part of <a href="">GDPR Consent</a> overridden
-          with slightly crazy custom CSS.
+          An <a href="">informational</a> notice simply tells
+          users that we use cookies and informing them of the privacy Ts &amp; Cs, and lets the user dismiss the message. This is the simplest solution.
         </p>
 
         <ul class="example-selector"></ul>
 
         <a href="examples/example-1-themes.html" class="page-switcher page-switcher-prev" title="Previous demo">&#9664;</a>
-        <a href="examples/example-3-informational.html" class="page-switcher page-switcher-next" title="Next demo">&#9654;</a>
+        <a href="examples/example-3-opt-in.html" class="page-switcher page-switcher-next" title="Next demo">&#9654;</a>
 
       </div>
     </div>
@@ -37,12 +36,15 @@
 <script src="js/gdprconsent.min.js"></script>
 <script>
 
-  (function (G, U) {
+  (function (C, U) {
     pageState = U.initialisePopupSelector({
-      gdprconsent: G,
+      gdprconsent: C,
       selector: document.querySelector('.example-selector'),
       popups: {
-        'Click me': {},
+        'Try it': {
+          type: 'info',
+          "palette":{"popup":{"background":"#383b75"},"button":{"background":"#f1d600"}}
+        },
       },
     });
   } (window.gdprconsent, window.gdprconsent_example_util));

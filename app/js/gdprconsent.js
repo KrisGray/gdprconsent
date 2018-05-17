@@ -204,10 +204,10 @@
       // each item defines the inner text for the element that it references
       content: {
         header: 'Privacy &amp; Cookie notice!',
-        message: 'This website uses cookies and stores the IP address to ensure you get the best experience on our website. Please read the Ts &amp Cs.',
-        allow: 'Accept Ts &amp; Cs',
+        message: 'This website requires cookies, and the limited processing of your personal data in order to function. By using the site you are agreeing to this as outlined in our ',
+        allow: 'Accept',
         deny: 'Decline',
-        link: 'Privacy Terms &amp; Conditions',
+        link: 'Privacy policy',
         href: 'http://cookiesandyou.com',
         close: '&#x274c;',
       },
@@ -220,7 +220,7 @@
       elements: {
         header: '<span class="gc-header">{{header}}</span>&nbsp;',
         message: '<span id="gdprconsent:desc" class="gc-message">{{message}}</span>',
-        messagelink: '<span id="gdprconsent:desc" class="gc-message">{{message}} <a aria-label="learn more about cookies" role=button tabindex="0" class="gc-link" href="{{href}}" rel="noopener noreferrer nofollow" target="_blank">{{link}}</a></span>',
+        messagelink: '<span id="gdprconsent:desc" class="gc-message">{{message}} <a aria-label="learn more about our privacy policy" role=button tabindex="0" class="gc-link" href="{{href}}" rel="noopener noreferrer nofollow" target="_blank">{{link}}</a></span>',
         allow: '<a aria-label="allow cookies" role=button tabindex="0"  class="gc-btn gc-allow">{{allow}}</a>',
         deny: '<a aria-label="deny cookies" role=button tabindex="0" class="gc-btn gc-deny">{{deny}}</a>',
         link: '<a aria-label="learn more about cookies" role=button tabindex="0" class="gc-link" href="{{href}}" target="_blank">{{link}}</a>',
@@ -232,8 +232,8 @@
       // The placeholders {{classes}} and {{children}} both get replaced during initialisation:
       //  - {{classes}} is where additional classes get added
       //  - {{children}} is where the HTML children are placed
-      window: '<div role="dialog" aria-live="polite" aria-label="gdprconsent" aria-describedby="gdprconsent:desc" class="gc-window {{classes}}"><!--googleoff: all-->{{children}}<!--googleon: all--></div>',
-
+      window: '<div role="dialog" aria-live="polite" aria-label="gdprconsent" aria-describedby="gdprconsent:desc" class="gc-window"><div class="gc-notice {{classes}}"><!--googleoff: all-->{{children}}<!--googleon: all--></div></div>',
+      deathShroud: '<div role="dialog" aria-live="polite" aria-label="gdprconsent denied" aria-describedby="gdprconsent:desc" class="gc-death-shroud"><div class="gc-notice {{classes}}"><!--googleoff: all--><p>You have chosen to decline the privacy policy and therefore we cannot provide this service to you.</p><p>If you have changed your mind, either refresh the page or click on the "Privacy Policy" tab.</p><!--googleon: all--></div></div>',
       // This is the html for the revoke button. This only shows up after the user has selected their level of consent
       // It can be enabled of disabled using the `revokable` option
       revokeBtn: '<div class="gc-revoke {{classes}}">Privacy Policy</div>',
@@ -241,7 +241,7 @@
       // define types of 'compliance' here. '{{value}}' strings in here are linked to `elements`
       compliance: {
         'info': '<div class="gc-compliance">{{allow}}</div>',
-        'opt-in': '<div class="cc-compliance cc-highlight">{{deny}}{{allow}}</div>'
+        'opt-in': '<div class="gc-compliance gc-highlight">{{deny}}{{allow}}</div>'
       },
 
       // select your type of popup here
@@ -276,9 +276,7 @@
       // Note: style "wire" is used for the configurator, but has no CSS styles of its own, only palette is used.
       theme: 'block',
 
-      // The popup is `fixed` by default, but if you want it to be static (inline with the page content), set this to false
-      // Note: by default, we animate the height of the popup from 0 to full size
-      static: false,
+      
 
       // if you want custom colours, pass them in here. this object should look like this.
       // ideally, any custom colours/themes should be created in a separate style sheet, as this is more efficient.
@@ -371,19 +369,7 @@
         gdprPopup = customHTML;
       }
 
-      // if static, we need to grow the element from 0 height so it doesn't jump the page
-      // content. we wrap an element around it which will mask the hidden content
-      if (this.options.static) {
-        // `grower` is a wrapper div with a hidden overflow whose height is animated
-        var wrapper = appendMarkup.call(this, '<div class="gc-grower">' + gdprPopup + '</div>');
-
-        wrapper.style.display = ''; // set it to visible (because appendMarkup hides it)
-        this.element = wrapper.firstChild; // get the `element` reference from the wrapper
-        this.element.style.display = 'none';
-        util.addClass(this.element, 'gc-invisible');
-      } else {
-        this.element = appendMarkup.call(this, gdprPopup);
-      }
+      this.element = appendMarkup.call(this, gdprPopup);
 
       applyRevokeButton.call(this);
 
@@ -422,9 +408,21 @@
       this.options = null;
     };
 
+    GDPRPopup.prototype.openDeathShroud = function () {
+      var shroud = document.getElementsByClassName("gc-death-shroud")[0];
+      shroud.style.display = '';
+      var revoke = document.getElementsByClassName("gc-revoke")[0];
+      revoke.classList.remove("gc-animate");
+      console.log(this.options);
+    }
+
+    GDPRPopup.prototype.closeDeathShroud = function () {
+      var shroud = document.getElementsByClassName("gc-death-shroud")[0];
+      shroud.style.display = 'none';
+    }
+
     GDPRPopup.prototype.open = function() {
       if (!this.element) return;
-
       if (!this.isOpen()) {
         if (gc.hasTransition) {
           this.fadeIn();
@@ -540,10 +538,11 @@
 
     GDPRPopup.prototype.revokeChoice = function(preventOpen) {
       this.options.enabled = true;
+      this.closeDeathShroud();
       if(this.options.type === 'opt-in'){
           //We don't want this next line as we want the button to pop up and allow us to change the settings.
           //this.clearStatus();
-      
+
           this.options.onRevokeChoice.call(this);
 
            if (!preventOpen) {
@@ -585,7 +584,12 @@
         util.setCookie('gdpr_version', this.options.GDPR_VERSION, c.expiryDays, c.domain, c.path);
         if (status === 'deny'){
           this.clearStatus();
+          this.openDeathShroud();
         } else {
+          if(this.options.animateRevokable){
+            var revoke = document.getElementsByClassName("gc-revoke")[0];
+            revoke.classList.add('gc-animate');
+          }
           this.options.onStatusChange.call(this, status, chosenBefore);
         }
       } else {
@@ -604,13 +608,13 @@
     };
 
     GDPRPopup.prototype.checkVersion = function () {
-  if (util.getCookie('gdpr_version') !== this.options.GDPR_VERSION){
-    this.clearStatus();
-          this.open();
-          return false;
+      if (util.getCookie('gdpr_version') !== this.options.GDPR_VERSION){
+      this.clearStatus();
+        this.open();
+        return false;
       }
       return true;
-}
+    }
 
     // This needs to be called after 'fadeIn'. This is the code that actually causes the fadeIn to work
     // There is a good reason why it's called in a timeout. Read 'fadeIn';
@@ -631,9 +635,6 @@
     // this function calls the `onComplete` hook and returns true (if needed) and returns false otherwise
     function checkCallbackHooks() {
       var complete = this.options.onInitialise.bind(this);
-      
-
-
 
       if (!window.navigator.cookieEnabled) {
         complete(gc.status.deny);
@@ -668,24 +669,12 @@
 
     function getPopupClasses() {
       var opts = this.options;
-      var positionStyle = (opts.position == 'top' || opts.position == 'bottom') ? 'banner' : 'floating';
-
-      if (util.isMobile()) {
-        positionStyle = 'floating';
-      }
-
+      var positionStyle = 'floating';
       var classes = [
         'gc-' + positionStyle, // floating or banner
         'gc-type-' + opts.type, // add the compliance type
         'gc-theme-' + opts.theme, // add the theme
       ];
-
-      if (opts.static) {
-        classes.push('gc-static');
-      }
-
-      classes.push.apply(classes, getPositionClasses.call(this));
-
       // we only add extra styles if `palette` has been set to a valid value
       attachCustomPalette.call(this, this.options.palette);
 
@@ -822,7 +811,7 @@
         // assumes popup.background is set
         popup.text = popup.text ? popup.text : util.getContrast(popup.background);
         popup.link = popup.link ? popup.link : popup.text;
-        colorStyles[prefix + '.gc-window'] = [
+        colorStyles[prefix + '.gc-notice'] = [
           'color: ' + popup.text,
           'background-color: ' + popup.background
         ];
@@ -962,6 +951,9 @@
           this.onMouseMove = onMouseMove;
           window.addEventListener('mousemove', onMouseMove);
         }
+        var deathShroud = this.options.deathShroud
+          .replace('{{classes}}', getPopupClasses.call(this).join(' '));
+        this.deathShroud = appendMarkup.call(this, deathShroud);
       }
     }
 
@@ -986,9 +978,8 @@
 
       // the order that services will be attempted in
       services: [
-        'freegeoip',
-        'ipinfo',
-        'maxmind'
+        'maxmind',
+        'ipstack'
 
         /*
 
@@ -1013,63 +1004,6 @@
       ],
 
       serviceDefinitions: {
-
-        freegeoip: function() {
-          return {
-            // This service responds with JSON, but they do not have CORS set, so we must use JSONP and provide a callback
-            // The `{callback}` is automatically rewritten by the tool
-            url: '//freegeoip.net/json/?callback={callback}',
-            isScript: true, // this is JSONP, therefore we must set it to run as a script
-            callback: function(done, response) {
-              try{
-                var json = JSON.parse(response);
-                return json.error ? toError(json) : {
-                  code: json.country_code
-                };
-              } catch (err) {
-                return toError({error: 'Invalid response ('+err+')'});
-              }
-            }
-          }
-        },
-
-        ipinfo: function() {
-          return {
-            // This service responds with JSON, so we simply need to parse it and return the country code
-            url: '//ipinfo.io',
-            headers: ['Accept: application/json'],
-            callback: function(done, response) {
-              try{
-                var json = JSON.parse(response);
-                return json.error ? toError(json) : {
-                  code: json.country
-                };
-              } catch (err) {
-                return toError({error: 'Invalid response ('+err+')'});
-              }
-            }
-          }
-        },
-
-        // This service requires an option to define `key`. Options are provided using objects or functions
-        ipinfodb: function() {
-          return {
-            // This service responds with JSON, so we simply need to parse it and return the country code
-            url: '//api.ipinfodb.com/v3/ip-country/?key={api_key}&format=json&callback={callback}',
-            isScript: true, // this is JSONP, therefore we must set it to run as a script
-            callback: function(done, response) {
-              try{
-                var json = JSON.parse(response);
-                return json.statusCode == 'ERROR' ? toError({error: json.statusMessage}) : {
-                  code: json.countryCode
-                };
-              } catch (err) {
-                return toError({error: 'Invalid response ('+err+')'});
-              }
-            }
-          }
-        },
-
         maxmind: function() {
           return {
             // This service responds with a JavaScript file which defines additional functionality. Once loaded, we must
@@ -1100,6 +1034,21 @@
             }
           }
         },
+        ipstack: function() {
+          return {
+            url: 'http://api.ipstack.com/check?access_key={api_key}&output=json&fields=country_code',
+            callback: function(done, response) {
+              try{
+                var json = JSON.parse(response);
+                return json.error ? toError(json) : {
+                  code: json.country_code
+                };
+              } catch (err) {
+                return toError({error: 'Invalid response ('+err+')'});
+              }
+            }
+          }
+        }
       },
     };
 
@@ -1290,7 +1239,6 @@
     // calls the `onComplete` callback after resetting the `currentServiceIndex`
     Location.prototype.completeService = function(fn, data) {
       this.currentServiceIndex = -1;
-
       fn && fn(data);
     };
 
@@ -1374,14 +1322,14 @@
       regionalLaw: true,
 
       // countries that enforce some version of a cookie law
-      hasLaw: ['AT', 'BE', 'BG', 'HR', 'CZ', 'CY', 'DK', 'EE', 'FI', 'FR', 'DE', 'EL', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'SK', 'SI', 'ES', 'SE', 'GB', 'UK'],
+      hasLaw: ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'RO', 'SK', 'SI', 'ES', 'SE', 'UK', 'GB'],
 
-      // countries that say that all cookie consent choices must be revokable (a user must be able too change their mind)
-      revokable: ['HR', 'CY', 'DK', 'EE', 'FR', 'DE', 'LV', 'LT', 'NL', 'PT', 'ES'],
+      // countries that say that all cookie consent choices must be revokable (a user should be able to change their mind)
+      revokable: ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'RO', 'SK', 'SI', 'ES', 'SE', 'UK', 'GB'],
 
       // countries that say that a person can only "consent" if the explicitly click on "I agree".
       // in these countries, consent cannot be implied via a timeout or by scrolling down the page
-      explicitAction: ['HR', 'IT', 'ES'],
+      explicitAction: ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'RO', 'SK', 'SI', 'ES', 'SE', 'UK', 'GB'],
     };
 
     function Law() {

@@ -1,4 +1,4 @@
-.gc-window, .gc-revoke {
+.gc-window {
   opacity: 1;
   -webkit-transition: opacity 1s ease;
   -moz-transition: opacity 1s ease;
@@ -6,7 +6,7 @@
   -o-transition: opacity 1s ease;
   transition: opacity 1s ease; }
 
-.gc-window.gc-invisible, .gc-invisible.gc-revoke {
+.gc-window.gc-invisible {
   opacity: 0; }
 
 /* only animate if has class 'cc-animate' */
@@ -44,37 +44,60 @@
   transition: max-height 1s ease; }
 
 /* the popup window */
-.gc-window, .gc-revoke {
+.gc-window,
+.gc-death-shroud {
   position: fixed;
   overflow: hidden;
   box-sizing: border-box;
   /* exclude padding when dealing with width */
   font-family: Helvetica, Calibri, Arial, sans-serif;
-  font-size: 16px;
+  font-size: 1em;
   /* by setting the base font here, we can size the rest of the popup using CSS `em` */
   line-height: 1.5em;
   display: flex;
   flex-wrap: nowrap;
-  /* the following are random unjustified styles - just because - should probably be removed */
-  z-index: 9999; }
-
-.gc-window.gc-static, .gc-static.gc-revoke {
-  position: static; }
+  z-index: 9999;
+  position: fixed;
+  /* Stay in place */
+  z-index: 1;
+  /* Sit on top */
+  padding-top: 100px;
+  /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%;
+  /* Full width */
+  height: 100%;
+  /* Full height */
+  overflow: auto;
+  /* Enable scroll if needed */
+  background-color: transparent;
+  /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4);
+  /* Black w/ opacity */ }
 
 /* 2 basic types of window - floating / banner */
-.gc-window.gc-floating, .gc-floating.gc-revoke {
+.gc-notice.gc-floating {
   padding: 2em;
   max-width: 24em;
   /* 1em == 16px therefore 24em == 384px */
-  flex-direction: column; }
-
-.gc-window.gc-banner, .gc-banner.gc-revoke {
-  padding: 1em 1.8em;
-  width: 100%;
-  flex-direction: row; }
+  flex-direction: column;
+  margin: auto;
+  border-radius: .5em; }
 
 .gc-revoke {
-  padding: .5em; }
+  position: fixed;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* exclude padding when dealing with width */
+  font-family: Helvetica, Calibri, Arial, sans-serif;
+  font-size: 1em;
+  /* by setting the base font here, we can size the rest of the popup using CSS `em` */
+  line-height: 1.5em;
+  display: flex;
+  flex-wrap: nowrap;
+  padding: .5em;
+  z-index: 9999; }
 
 .gc-revoke:hover {
   text-decoration: underline; }
@@ -137,7 +160,7 @@
 .gc-close:focus {
   opacity: 1; }
 
-.gc-window, .gc-revoke {
+.gc-window {
   opacity: 1;
   -webkit-transition: opacity 1s ease;
   -moz-transition: opacity 1s ease;
@@ -145,7 +168,7 @@
   -o-transition: opacity 1s ease;
   transition: opacity 1s ease; }
 
-.gc-window.gc-invisible, .gc-invisible.gc-revoke {
+.gc-window.gc-invisible {
   opacity: 0; }
 
 /* only animate if has class 'cc-animate' */
@@ -226,11 +249,11 @@
   display: block;
   margin-bottom: 1em; }
 
-.gc-window.gc-floating .gc-compliance, .gc-floating.gc-revoke .gc-compliance {
+.gc-window.gc-floating .gc-compliance {
   flex: 1 0 auto; }
 
 /**************************************** BANNER ****************************************/
-.gc-window.gc-banner, .gc-banner.gc-revoke {
+.gc-window.gc-banner {
   align-items: center; }
 
 .gc-banner.gc-top {
@@ -259,7 +282,7 @@
   margin-left: .5em; }
 
 @media print {
-  .gc-window, .gc-revoke, .gc-revoke {
+  .gc-window, .gc-revoke {
     display: none; } }
 
 @media screen and (max-width: 900px) {
@@ -268,22 +291,22 @@
 
 /* dimensions for 'iPhone6 Plus' and lower */
 @media screen and (max-width: 414px) and (orientation: portrait), screen and (max-width: 736px) and (orientation: landscape) {
-  .gc-window.gc-top, .gc-top.gc-revoke {
+  .gc-window.gc-top {
     top: 0; }
-  .gc-window.gc-bottom, .gc-bottom.gc-revoke {
+  .gc-window.gc-bottom {
     bottom: 0; }
-  .gc-window.gc-banner, .gc-banner.gc-revoke, .gc-window.gc-right, .gc-right.gc-revoke, .gc-window.gc-left, .gc-left.gc-revoke {
+  .gc-window.gc-banner, .gc-window.gc-right, .gc-window.gc-left {
     left: 0;
     right: 0; }
-  .gc-window.gc-banner, .gc-banner.gc-revoke {
+  .gc-window.gc-banner {
     flex-direction: column; }
-  .gc-window.gc-banner .gc-compliance, .gc-banner.gc-revoke .gc-compliance {
+  .gc-window.gc-banner .gc-compliance {
     flex: 1; }
-  .gc-window.gc-floating, .gc-floating.gc-revoke {
+  .gc-window.gc-floating {
     max-width: none; }
-  .gc-window .gc-message, .gc-revoke .gc-message {
+  .gc-window .gc-message {
     margin-bottom: 1em; }
-  .gc-window.gc-banner, .gc-banner.gc-revoke {
+  .gc-window.gc-banner {
     align-items: unset; } }
 
 /* iPhone 6 */
@@ -310,7 +333,7 @@
   min-width: 140px; }
 
 /* Edgeless */
-.gc-theme-edgeless.gc-window, .gc-theme-edgeless.gc-revoke {
+.gc-theme-edgeless.gc-window {
   padding: 0; }
 
 .gc-floating.gc-theme-edgeless .gc-message {

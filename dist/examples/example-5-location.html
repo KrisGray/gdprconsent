@@ -14,7 +14,7 @@
     #message {height: 5em}
     #message>table {margin: 0 auto;}
   </style>
-
+</head>
 <body class="example6" role="document">
 
   <div class="center-outer fit">
@@ -311,16 +311,20 @@
       var countryOpts = law.get(code);
 
       if (!countryOpts.hasLaw) {
-        return 'Has cookie law? no';
+        return U.tabularObject({
+          'Has GDPR law?': 'no',
+          'Has cookie law?': 'no'
+        });
       }
 
       return U.tabularObject({
-        'Has cookie law?': 'yes',
-        'Choice has to be revokable?': countryOpts.revokable ? 'yes' : 'no',
-        'Can be automatically dismissed?': countryOpts.explicitAction ? 'no' : 'yes',
+        'Has GDPR law?': 'yes',
+        'Has cookie law?': 'yes'
       });
     }
 
   }(window.gdprconsent, window.gdprconsent_example_util));
 
 </script>
+</body>
+</html>

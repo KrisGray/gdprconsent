@@ -1,41 +1,51 @@
 @import 'animation';
 /* the popup window */
 
-.gc-window {
+.gc-window,
+.gc-death-shroud {
   position: fixed;
   overflow: hidden;
   box-sizing: border-box; /* exclude padding when dealing with width */
-
   font-family: Helvetica, Calibri, Arial, sans-serif;
-  font-size: 16px; /* by setting the base font here, we can size the rest of the popup using CSS `em` */
+  font-size: 1em; /* by setting the base font here, we can size the rest of the popup using CSS `em` */
   line-height: 1.5em;
-
   display: flex;
   flex-wrap: nowrap;
 
-  /* the following are random unjustified styles - just because - should probably be removed */
   z-index: 9999;
-}
-
-.gc-window.gc-static {
-  position: static;
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: transparent; /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
 /* 2 basic types of window - floating / banner */
-.gc-window.gc-floating {
+.gc-notice.gc-floating {
   padding: 2em;
   max-width: 24em; /* 1em == 16px therefore 24em == 384px */
   flex-direction: column;
-}
-.gc-window.gc-banner {
-  padding: 1em 1.8em;
-  width: 100%;
-  flex-direction:  row;
+  margin: auto;
+  border-radius: .5em;
 }
 
 .gc-revoke {
-  @extend .gc-window;
+  position: fixed;
+  overflow: hidden;
+  box-sizing: border-box; /* exclude padding when dealing with width */
+  font-family: Helvetica, Calibri, Arial, sans-serif;
+  font-size: 1em; /* by setting the base font here, we can size the rest of the popup using CSS `em` */
+  line-height: 1.5em;
+  display: flex;
+  flex-wrap: nowrap;
+
   padding: .5em;
+  z-index: 9999;
 }
 .gc-revoke:hover {
   text-decoration: underline;

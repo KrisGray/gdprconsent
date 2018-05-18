@@ -32,4 +32,4 @@ If the user declines, they will receive a notice saying that the service will be
 
 To understand what you need for your site, the following link is really helpful:
 
-[Guide to the General Data Protection Regulation (GDPR) @ ico.org.uk](https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr)
+[Guide to the General Data Protection Regulation (GDPR) @ ico.org.uk](https://ico.org.uk/for-organisations/guide-to-the-general-data-protection-regulation-gdpr/lawful-basis-for-processing)

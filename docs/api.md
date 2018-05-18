@@ -34,7 +34,7 @@ This example places an informational (default) black and white popup with a yell
   </script>
 ```
 
-###Main options
+### Main options
 
 These are the main options that can be passed to the Cookie Consent tool.
 
@@ -48,7 +48,7 @@ Default: null
 
 The tool is automatically appended to the HTML body. Use this option to select the parent element. Use autoOpen: false to prevent the tool automatically appending itself to any container.
 
-###Cookie options
+### Cookie options
 
 It is recommended to set these values to correspond with your server. You MUST set the ‘domain’ option, otherwise your cookies may not work.
 

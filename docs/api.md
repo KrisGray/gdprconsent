@@ -1,9 +1,10 @@
 ---
 layout: default
 ---
-## JavaScript API
 
-### Example
+# JavaScript API
+
+## Example
 This example places an informational (default) black and white popup with a yellow button inside the body of a website. Location is switched on an so this example will send the users IP to Maxmind to get the country code as assess if the user needs to see the notice based on location.
 
 ```js
@@ -34,7 +35,7 @@ This example places an informational (default) black and white popup with a yell
   </script>
 ```
 
-### Main options
+## Main options
 
 These are the main options that can be passed to the Cookie Consent tool.
 
@@ -48,7 +49,7 @@ Default: null
 
 The tool is automatically appended to the HTML body. Use this option to select the parent element. Use autoOpen: false to prevent the tool automatically appending itself to any container.
 
-### Cookie options
+## Cookie options
 
 It is recommended to set these values to correspond with your server. You MUST set the ‘domain’ option, otherwise your cookies may not work.
 
@@ -72,7 +73,7 @@ Default: 365
 
 The cookies expire date, specified in days (specify -1 for no expiry)
 
-### Content options
+## Content options
 
 Text strings used for cookie consent window elements.
 
@@ -92,7 +93,7 @@ content: {
 
 Overwrite these default options to change the content within the tool
 
-### Custom HTML options
+## Custom HTML options
 
 `elements` (object)
 Defaults:
@@ -129,14 +130,14 @@ Default:
 
 This is shown when using opt-in and the user has declined. The user will only be able to interact with the revoke tab.
 
-### Position
+## Position
 
 `position` (string)
 Default: bottom
 
 Position is used to describe where on the screen your revoke should display. The other option is top.
 
-### Palette options
+## Palette options
 
 Colours can be defined in additional stylesheets or using attributes.
 
@@ -157,7 +158,7 @@ palette: {
 Highlight is optional and extends `button`. if it exists, it will apply to the rightmost button.
 Only background needs to be defined for every element. If text or border colour is not set, it will be calculated from the background colour.
 
-### Revoke options
+## Revoke options
 
 Some countries require consent to be revokable. Cookie Consent keeps track of these countries and adds a button to review the consent window.
 
@@ -176,7 +177,7 @@ Default: true
 
 If true, the revocable button will translate in and out. Disabled by default for mobile devices.
 
-### Callback hooks
+## Callback hooks
 
 Called at certain points in the program execution
 
@@ -202,7 +203,7 @@ This is called when the user clicks the ‘revoke’ button. This means that the
 
 Hooks can be used to disable cookies when consent is not given, and the generally extend the tool.
 
-### Location options
+## Location options
 
 The location services are disabled by default. You are encouraged to implement a handler to your own service, rather than using the free ones provided.
 

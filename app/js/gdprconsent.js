@@ -590,7 +590,9 @@
         } else {
           if(this.options.animateRevokable){
             var revoke = document.getElementsByClassName("gc-revoke")[0];
-            revoke.classList.add('gc-animate');
+            if (revoke) {
+              revoke.classList.add('gc-animate');
+            }
           }
           this.options.onStatusChange.call(this, status, chosenBefore);
         }

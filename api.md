@@ -39,6 +39,11 @@ This example places an informational (default) black and white popup with a yell
 
 These are the main options that can be passed to the Cookie Consent tool.
 
+`GDPR_VERSION` (string)
+Default: '25-May-2018'
+
+Please add your version or date of the privacy policy. This field is used to set a gdpr_version cookie and if the version in the code does not match the version in the cookie, the notice will be shown once more.
+
 `enabled` (boolean)
 Default: true
 

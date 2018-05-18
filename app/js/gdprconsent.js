@@ -204,8 +204,8 @@
       // each item defines the inner text for the element that it references
       content: {
         header: 'Privacy &amp; Cookie notice!',
-        message: 'This website requires cookies, and the limited processing of your personal data in order to function. By using the site you are agreeing to this as outlined in our ',
-        allow: 'Accept',
+        message: 'This website requires cookies, and the limited processing of your personal data in order to function. For more information please read our',
+        allow: 'OK',
         deny: 'Decline',
         link: 'Privacy policy',
         href: 'http://cookiesandyou.com',

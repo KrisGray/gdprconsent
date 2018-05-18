@@ -4,13 +4,13 @@ layout: default
 
 ## What is GDPR Consent?
 
-GDPR is a lightweight JavaScript plugin based on Cookie Consent for alerting users about the privacy policy and the use of cookies within the website.
+GDPR consent is a lightweight JavaScript plugin based on [Cookie Consent](https://cookieconsent.insites.com/) for alerting users about the privacy policy and the use of cookies within the website.
 
 It is designed to help you comply with the EU Cookie Law and the GDPR.
     
 ## Version 1.0
 
-Version 1.0 is based on the Cookie consent version 3.0. Noticable differences are as follows:
+Version 1.0 is based on the Cookie consent version 3.0. Noticeable differences are as follows:
 
 - CSS development now done via SASS (scss).
 - Due to GDPR rules, Opt-out is not an option and so opt-out and the dismiss status are removed.

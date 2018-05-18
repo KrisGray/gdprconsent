@@ -3,7 +3,7 @@ var concat = require('gulp-concat');
 var rename = require('gulp-rename');
 var minifyJS = require('gulp-uglify');
 var minifyCSS = require('gulp-minify-css');
-var deleteDirs = require('del');
+var del = require('del');
 var runSequence = require('run-sequence');
 var autoprefixer = require('gulp-autoprefixer');
 var bump = require('gulp-bump');
@@ -16,6 +16,10 @@ var buildFolder = './dist';
 var buildJS = buildFolder + '/js';
 var buildCSS = buildFolder + '/css';
 
+var docs = './docs';
+var docsGcJs = docs + '/js/gdprconsent.min.js';
+var docsGcCss = docs + '/css/gdprconsent.min.css';
+
 var cssFolder = './app/css';
 var jsDevFiles = [
   './app/js/gdprconsent.js'
@@ -26,7 +30,7 @@ var cssDevFiles = [
 
 
 gulp.task('cleanup:begin', function () {
-  return deleteDirs([buildJS, buildCSS, cssFolder]);
+  return del([buildJS, buildCSS, cssFolder]);
 });
 
 gulp.task('sass', function(){
@@ -62,7 +66,7 @@ gulp.task('bump', function(callback) {
 });
 
 gulp.task('build', function(callback) {
-  return runSequence('cleanup:begin', 'minify:js', 'sass', 'minify:css', callback);
+  return runSequence('cleanup:begin', 'minify:js', 'sass', 'minify:css', 'cleanup:docs', 'copy:js2doc', 'copy:css2doc', callback);
 });
 
 gulp.task('verify', function(callback) {
@@ -95,6 +99,23 @@ gulp.task('build:release', function(callback) {
 gulp.task('watch', function() {
   gulp.watch(['./app/**/*.scss', './app/**/*.js'], ['build']);
 });
+
+gulp.task('cleanup:docs', function(){
+  return del([docsGcJs, docsGcCss]);
+});
+
+gulp.task('copy:js2doc', function(){
+  return gulp.src('./dist/js/*.js')            // get files
+    .pipe(concat('gdprconsent.min.js'))  // combine them
+    .pipe(gulp.dest('./docs/js'));
+});
+
+gulp.task('copy:css2doc', function(){
+  return gulp.src('./dist/css/*.css')            // get files
+    .pipe(concat('gdprconsent.min.css'))  // combine them
+    .pipe(gulp.dest('./docs/css'));
+});
+
 
 function _minify(opts) {
 }

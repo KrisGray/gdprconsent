@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/KrisGray/gdprconsent.svg)](https://travis-ci.org/KrisGray/gdprconsent)
 ## What is GDPR Consent? 
 
-[GDPR]() is a lightweight JavaScript plugin based on [Cookie Consent](https://cookieconsent.insites.com/) for alerting users about the privacy policy and the use of cookies within the website.
+[GDPR consent](https://krisgray.github.io/gdprconsent) is a lightweight JavaScript plugin based on [Cookie Consent](https://cookieconsent.insites.com/) for alerting users about the privacy policy and the use of cookies within the website.
 
 It is designed to help you comply with the EU Cookie Law and the GDPR.
 
@@ -17,7 +17,7 @@ Version 1.0 is based on the Cookie consent version 3.0. Noticable differences ar
 
 ## Documentation 
 
-See our [full documentation]().
+See our [full documentation](https://krisgray.github.io/gdprconsent).
 
 ## Contributing
 

@@ -412,8 +412,10 @@
       var shroud = document.getElementsByClassName("gc-death-shroud")[0];
       shroud.style.display = '';
       var revoke = document.getElementsByClassName("gc-revoke")[0];
-      revoke.classList.remove("gc-animate");
-      console.log(this.options);
+      
+      if (revoke) {
+        revoke.classList.remove("gc-animate");
+      }
     }
 
     GDPRPopup.prototype.closeDeathShroud = function () {

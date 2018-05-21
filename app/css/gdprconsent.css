@@ -113,7 +113,7 @@
 .gc-link {
   opacity: .8;
   display: inline-block;
-  padding: .2em;
+  /*padding: .2em;*/
   text-decoration: underline; }
 
 .gc-link:hover {
@@ -241,13 +241,14 @@
 .gc-bottom {
   bottom: 1em; }
 
-/* links that are direct decendants should be displayed as block */
-.gc-floating > .gc-link {
-  margin-bottom: 1em; }
-
+/* links that are direct decendants should be displayed as block
+.gc-floating>.gc-link {
+  margin-bottom: 1em
+}
+ */
 .gc-floating .gc-message {
   display: block;
-  margin-bottom: 1em; }
+  /*margin-bottom: 1em;*/ }
 
 .gc-window.gc-floating .gc-compliance {
   flex: 1 0 auto; }
@@ -273,7 +274,8 @@
 .gc-compliance {
   display: flex;
   align-items: center;
-  align-content: space-between; }
+  align-content: space-between;
+  margin-top: 1em; }
 
 .gc-compliance > .gc-btn {
   flex: 1; }

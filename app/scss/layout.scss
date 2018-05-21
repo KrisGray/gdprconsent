@@ -13,14 +13,15 @@
 .gc-top {top: 1em} .gc-left {left: 1em} .gc-right {right: 1em} .gc-bottom {bottom: 1em}
 
 
-/* links that are direct decendants should be displayed as block */
+/* links that are direct decendants should be displayed as block
 .gc-floating>.gc-link {
   margin-bottom: 1em
 }
+ */
 
 .gc-floating .gc-message {
   display: block;
-  margin-bottom: 1em;
+  /*margin-bottom: 1em;*/
 }
 
 
@@ -51,6 +52,7 @@
   display: flex;
   align-items: center;
   align-content: space-between;
+  margin-top: 1em;
 }
 .gc-compliance>.gc-btn {
   flex: 1;

@@ -2,7 +2,7 @@
   "name": "gdprconsent",
   "version": "1.0.0",
   "description": "KrisGray's cookie and GDPR consent plugin based on insites/cookieconsent",
-  "main": "build/gdprconsent.min.js",
+  "main": "dist/js/gdprconsent.min.js",
   "devDependencies": {
     "autoprefixer": "^6.4.0",
     "del": "^2.0.2",
